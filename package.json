@@ -1,0 +1,20 @@
+{
+  "name": "full-stack-app",
+  "version": "1.0.0",
+  "description": "_Placeholder project for a full-stack Node app_",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jreina/full-stack-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jreina/full-stack-app/issues"
+  },
+  "homepage": "https://github.com/jreina/full-stack-app#readme"
+}
