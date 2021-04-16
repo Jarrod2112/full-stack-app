@@ -2,6 +2,7 @@ const path = require('path');
 const express = require("express");
 const app = express();
 
+
 // GET, POST, PUT, PATCH, DELETE
 
 // this parses POST bodies as JSON
@@ -20,20 +21,27 @@ const posts = [
 // 1. Add an incrementing id to new posts
 // 2. Add an endpoint to delete a post by id `DELETE /api/posts/:id`
 
-app.post('/api/posts', function(req, res) {
-    const post = req.body.post;
+app.post('/api/posts', function (req, res) {
+    let id = req.body.id;
+    const post = req.body.posts;
     const username = req.body.username;
-    const newPost = {
-        post: post, 
+    //counter++;
+    for(i = 0; i < posts.length; i++ -1){
+        id = i;
+    }
+    posts.push(id);
+    let newPost = {
+        id: id,
+        post: post,
         username: username,
-        timestamp: new Date()
-    };
+        timestamp: new Date(),
+    }    
     posts.push(newPost);
     return res.json(newPost);
-})
+});
 
 // Post Functionality
-app.get('/api/posts', function(req, res) {
+app.get('/api/posts', function (req, res) {
     return res.json(posts);
     // res.send(JSON.stringify([]))
 });
