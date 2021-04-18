@@ -34,6 +34,25 @@ app.post("/api/posts", function (req, res) {
     posts.push(newPost);
     return res.json(newPost);
 });
+/*
+There are a few ways for information/data to be passed in with a request:
+1. On the body of a request
+2. In a URL parameter
+3. In a query string
+*/
+
+/**
+ * This endpoint specifies that a parameter in the position of
+ * :id will get added to req.params.id
+ */
+app.delete("/api/posts/:id", function (req, res) {
+    const id = parseInt(req.params.id); // all parameters come through as strings, you have to parse it yourself accordingly
+
+    const postIndex = posts.findIndex(post => post.id === id);
+    posts.splice(postIndex, 1);
+
+    return res.json({ id });
+});
 
 // Post Functionality
 app.get("/api/posts", function (req, res) {
