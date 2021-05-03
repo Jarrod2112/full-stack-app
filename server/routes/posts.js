@@ -1,4 +1,4 @@
-const { ObjectID } = require("bson");
+const { ObjectID, Timestamp } = require("bson");
 const { Router, json } = require("express");
 const { BSONType } = require("mongodb");
 const db = require("../mongo/MongoSingleton");
@@ -27,14 +27,29 @@ postsRouter.post("/", async function (req, res) {
  * This endpoint specifies that a parameter in the position of
  * :id will get added to req.params.id
  */
-postsRouter.get("/:username", async function (req, res) {
-  const user =  req.params.username;
+// GET /api/posts/search?start=2021-01-01T00:00:00.000&end=2021-05-01T00:00:00.000
+// postsRouter.get("/search", (req, res) => { req.query.start })
+
+
+// POST /api/posts/comments/:id
+postsRouter.post("/comments/:id", async function (req, res) {
+  const id = ObjectID(req.params.id);
   const collection = db.getInstance().collection("posts");
-  let query = { username: user };
-  const result = await collection.findOne(query);
-  console.log(result);
-  return res.json(result);
-});
+  let query = { _id: id };
+  const username = req.body.username;
+  let comment = req.body.comment;
+  const newComment = {
+    username, 
+    comment,
+    timestamp: new Date(),
+    id: new ObjectID()
+  }
+  await collection.updateOne(
+      query,
+      { $push: { comments: newComment } }
+  )
+  return res.json(newComment.id);
+})
 
 postsRouter.get("/:id", async function (req, res) {
   // get a post by id
@@ -45,6 +60,14 @@ postsRouter.get("/:id", async function (req, res) {
   return res.json(cursor);
 });
 
+postsRouter.get("/:username", async function (req, res) {
+  const user = req.params.username;
+  const collection = db.getInstance().collection("posts");
+  let query = { username: user };
+  const result = await collection.findOne(query);
+  return res.json(result);
+});
+
 postsRouter.delete("/:id", async function (req, res) {
   const id = ObjectID(req.params.id);
   const collection = db.getInstance().collection("posts");
@@ -52,7 +75,6 @@ postsRouter.delete("/:id", async function (req, res) {
   const result = await collection.deleteOne(query);
   return res.json(result);
 });
-
 
 // Post Functionality
 postsRouter.get("/", async function (req, res) {
