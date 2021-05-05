@@ -1,14 +1,36 @@
-const path = require("path");
-const express = require("express");
+const path = require('path');
+const express = require('express');
 const app = express();
 const mongo = require('./mongo/MongoSingleton');
 const apiRouter = require('./routes/api');
+const cors = require('cors');
+const passport = require('passport');
+const passportLocal = require('passport-local');
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcryptjs')
+const session = require('express-session');
+const bodyParser = require('body-parser')
+
+app.use(express);
+
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}))
 
 // GET, POST, PUT, PATCH, DELETE
 async function run() {
   await mongo.initialize('mongodb://localhost:27017/');
   // this parses POST bodies as JSON
-  app.use(express.json());
+  app.use(session.json({
+    secret: 'secretcode',
+    resave: true,
+    saveUninitialized: true
+  }));
+
+  app.use(cookieParser('secretcode'));
 
   // Set up mongo connection 
   // Set up API routes
