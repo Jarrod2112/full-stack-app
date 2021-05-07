@@ -24,7 +24,7 @@ app.use(cors({
 async function run() {
   await mongo.initialize('mongodb://localhost:27017/');
   // this parses POST bodies as JSON
-  app.use(session.json({
+  app.use(session({
     secret: 'secretcode',
     resave: true,
     saveUninitialized: true
