@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import Axios from "axios";
 
+
 function App() {
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -9,7 +10,7 @@ function App() {
   const [loginPassword, setLoginPassword] = useState("");
   const [data, setData] = useState(null);
   const register = () => {
-    Axios({
+        Axios({
       method: "POST",
       data: {
         username: registerUsername,
@@ -27,17 +28,17 @@ function App() {
         password: loginPassword,
       },
       withCredentials: true,
-      url: "http://localhost:4000/register",
+      url: "http://localhost:4000/login",
     }).then((res) => console.log(res));
   };
   const getUser = () => {
     Axios({
-      method: "POST",
+      method: "GET",
       withCredentials: true,
-      url: "http://localhost:4000/register",
+      url: "http://localhost:4000/user",
     }).then((res) => {
       setData(res.data);
-      console.log(res);
+      console.log(res.data);
     });
   };
   return (
@@ -74,7 +75,9 @@ function App() {
         {data ? <h1>Welcome Back {data.username}</h1> : null}
       </div>
     </div>
-  );
-}
+    
+    );
+  }
+  <script> console.log('hello')</script>
 
 export default App;
