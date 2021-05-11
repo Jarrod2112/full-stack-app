@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import Axios from "axios";
-
+import axios from "axios";
 
 function App() {
   const [registerUsername, setRegisterUsername] = useState("");
@@ -10,29 +9,27 @@ function App() {
   const [loginPassword, setLoginPassword] = useState("");
   const [data, setData] = useState(null);
   const register = () => {
-        Axios({
-      method: "POST",
-      data: {
-        username: registerUsername,
-        password: registerPassword,
-      },
-      withCredentials: true,
-      url: "http://localhost:4000/register",
-    }).then((res) => console.log(res));
+    axios
+      .post("/api/auth/register",
+        {
+          username: registerUsername,
+          password: registerPassword,
+        })
+      .then((res) => console.log(res));
   };
   const login = () => {
-    Axios({
+    axios({
       method: "POST",
       data: {
         username: loginUsername,
         password: loginPassword,
       },
       withCredentials: true,
-      url: "http://localhost:4000/login",
+      url: "/api/auth/login",
     }).then((res) => console.log(res));
   };
   const getUser = () => {
-    Axios({
+    axios({
       method: "GET",
       withCredentials: true,
       url: "http://localhost:4000/user",
@@ -47,10 +44,12 @@ function App() {
         <h1>Register</h1>
         <input
           placeholder="username"
+          type="text"
           onChange={(e) => setRegisterUsername(e.target.value)}
         />
         <input
           placeholder="password"
+          type="password"
           onChange={(e) => setRegisterPassword(e.target.value)}
         />
         <button onClick={register}>Submit</button>
@@ -75,9 +74,8 @@ function App() {
         {data ? <h1>Welcome Back {data.username}</h1> : null}
       </div>
     </div>
-    
-    );
-  }
-  <script> console.log('hello')</script>
+  );
+}
+<script> console.log('hello')</script>;
 
 export default App;

@@ -1,85 +1,77 @@
-const path = require('path');
-const express = require('express');
+const path = require("path");
+const express = require("express");
 const app = express();
-const mongo = require('./mongo/MongoSingleton');
-const apiRouter = require('./routes/api');
-const cors = require('cors');
-const passport = require('passport');
-const passportLocal = require('passport-local');
-const cookieParser = require('cookie-parser');
-const bcrypt = require('bcryptjs')
-const session = require('express-session');
-const bodyParser = require('body-parser')
-
-
-app.use(express);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
-}))
+const mongo = require("./mongo/MongoSingleton");
+const apiRouter = require("./routes/api");
+const cors = require("cors");
+const passport = require("passport");
+const passportLocal = require("passport-local");
+const session = require("express-session");
+const morgan = require("morgan");
+const LocalStrategy = require('./middleware/local-strategy')
 
 // GET, POST, PUT, PATCH, DELETE
 async function run() {
-  await mongo.initialize('mongodb://localhost:27017/');
+  await mongo.initialize("mongodb://localhost:27017/");
+
+  app.use(morgan("dev"));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
+
   // this parses POST bodies as JSON
-  app.use(session({
-    secret: 'secretcode',
-    resave: true,
-    saveUninitialized: true
-  }));
+  app.use(
+    session({
+      secret: "secretcode",
+      resave: true,
+      saveUninitialized: true,
+    })
+  );
 
-  app.use(cookieParser('secretcode'));
+  // set up passport
+  // set up auth strategy
+  passport.use(LocalStrategy);
 
-  // Set up mongo connection 
+  // set up a way to serialize a user
+  passport.serializeUser(function (user, cb) {
+    cb(null, user._id);
+  });
+
+  // set up a way to deserialize a user
+  passport.deserializeUser(async function(id, cb) {
+    const collection = mongo.getInstance().collection('users');
+    const user = await collection.findOne({ _id: new ObjectId(id) });
+    if(!user) {
+      return cb("User not found!");
+    }
+    return cb(null, user);
+  });
+
+  // initialize passport
+  app.use(passport.initialize());
+
+  // set up session storage
+  app.use(passport.session());
+
+  // Set up mongo connection
   // Set up API routes
-  app.use('/api', apiRouter);
+  app.use("/api", apiRouter);
+
 
   // Handle an HTTP GET request to /
   const publicAssets = path.join(__dirname, "../public");
   console.log("Serving public assets from ", publicAssets);
   app.use(express.static(publicAssets));
-
-  app.post("/register", (req, res) => {
-    User.findOne({ username: req.body.username }, async (err, doc) => {
-      if (err) throw err;
-      if (doc) res.send("User Already Exists");
-      if (!doc) {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-        const newUser = new User({
-          username: req.body.username,
-          password: hashedPassword,
-        });
-        res.send("User Created");
-      }
-    });
-  });
 }
 
-
-
-
-app.post("login", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) throw err;
-    if (!user) res.send("User Does Not Exist")
-    else {
-      req.logIn(user, (err) => {
-        if (err) throw err;
-        res.send("Successfully Authenticated");
-        console.log(req.user);
-      });
-    }
-  })
-
-})
 // This makes the server start listening to HTTP requests on port 4000
 app.listen(4000, () => {
   console.log("Listening on http://localhost:4000");
 });
-
 
 run();
