@@ -1,58 +1,77 @@
-const path = require('path');
+const path = require("path");
 const express = require("express");
 const app = express();
-
+const mongo = require("./mongo/MongoSingleton");
+const apiRouter = require("./routes/api");
+const cors = require("cors");
+const passport = require("passport");
+const passportLocal = require("passport-local");
+const session = require("express-session");
+const morgan = require("morgan");
+const LocalStrategy = require('./middleware/local-strategy')
 
 // GET, POST, PUT, PATCH, DELETE
+async function run() {
+  await mongo.initialize("mongodb://localhost:27017/");
 
-// this parses POST bodies as JSON
-app.use(express.json());
+  app.use(morgan("dev"));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
 
-// our database
-const posts = [
-    {
-        id: 0,
-        post: "Setting up my social media!",
-        timestamp: new Date(2002, 3, 7),
-        username: 'Jack'
+  // this parses POST bodies as JSON
+  app.use(
+    session({
+      secret: "secretcode",
+      resave: true,
+      saveUninitialized: true,
+    })
+  );
+
+  // set up passport
+  // set up auth strategy
+  passport.use(LocalStrategy);
+
+  // set up a way to serialize a user
+  passport.serializeUser(function (user, cb) {
+    cb(null, user._id);
+  });
+
+  // set up a way to deserialize a user
+  passport.deserializeUser(async function(id, cb) {
+    const collection = mongo.getInstance().collection('users');
+    const user = await collection.findOne({ _id: new ObjectId(id) });
+    if(!user) {
+      return cb("User not found!");
     }
-];
+    return cb(null, user);
+  });
 
-// 1. Add an incrementing id to new posts
-// 2. Add an endpoint to delete a post by id `DELETE /api/posts/:id`
+  // initialize passport
+  app.use(passport.initialize());
 
-app.post('/api/posts', function (req, res) {
-    let id = req.body.id;
-    const post = req.body.posts;
-    const username = req.body.username;
-    //counter++;
-    for(i = 0; i < posts.length; i++ -1){
-        id = i;
-    }
-    posts.push(id);
-    let newPost = {
-        id: id,
-        post: post,
-        username: username,
-        timestamp: new Date(),
-    }    
-    posts.push(newPost);
-    return res.json(newPost);
-});
+  // set up session storage
+  app.use(passport.session());
 
-// Post Functionality
-app.get('/api/posts', function (req, res) {
-    return res.json(posts);
-    // res.send(JSON.stringify([]))
-});
+  // Set up mongo connection
+  // Set up API routes
+  app.use("/api", apiRouter);
 
-// Handle an HTTP GET request to /
-const publicAssets = path.join(__dirname, '../public');
-console.log('Serving public assets from ', publicAssets);
-app.use(express.static(publicAssets));
 
+  // Handle an HTTP GET request to /
+  const publicAssets = path.join(__dirname, "../public");
+  console.log("Serving public assets from ", publicAssets);
+  app.use(express.static(publicAssets));
+}
 
 // This makes the server start listening to HTTP requests on port 4000
 app.listen(4000, () => {
-    console.log('Listening on http://localhost:4000');
+  console.log("Listening on http://localhost:4000");
 });
+
+run();
