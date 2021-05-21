@@ -1,81 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import axios from "axios";
+
+import { Login } from "./components/login";
+import { Register } from "./components/register";
+import userResources from "./resources/users";
 
 function App() {
-  const [registerUsername, setRegisterUsername] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [data, setData] = useState(null);
-  const register = () => {
-    axios
-      .post("/api/auth/register",
-        {
-          username: registerUsername,
-          password: registerPassword,
-        })
-      .then((res) => console.log(res));
-  };
-  const login = () => {
-    axios({
-      method: "POST",
-      data: {
-        username: loginUsername,
-        password: loginPassword,
-      },
-      withCredentials: true,
-      url: "/api/auth/login",
-    }).then((res) => console.log(res));
-  };
-  const getUser = () => {
-    axios({
-      method: "GET",
-      withCredentials: true,
-      url: "http://localhost:4000/user",
-    }).then((res) => {
-      setData(res.data);
-      console.log(res.data);
-    });
-  };
+  // 1. a place to store the logged in user
+  // 2. if there is no logged in user, show the register/login form
+  // 3. if there is a logged in user, show the app
+  const [user, setUser] = useState(null);
+
+  // use this to fetch the current logged in user when the app starts up
+  useEffect(() => {
+    userResources
+      .currentUser()
+      .then((currentUser) => {
+        setUser(currentUser);
+      })
+      .catch();
+  }, []);
+
   return (
     <div className="App">
-      <div>
-        <h1>Register</h1>
-        <input
-          placeholder="username"
-          type="text"
-          onChange={(e) => setRegisterUsername(e.target.value)}
-        />
-        <input
-          placeholder="password"
-          type="password"
-          onChange={(e) => setRegisterPassword(e.target.value)}
-        />
-        <button onClick={register}>Submit</button>
-      </div>
-
-      <div>
-        <h1>Login</h1>
-        <input
-          placeholder="username"
-          onChange={(e) => setLoginUsername(e.target.value)}
-        />
-        <input
-          placeholder="password"
-          onChange={(e) => setLoginPassword(e.target.value)}
-        />
-        <button onClick={login}>Submit</button>
-      </div>
-
-      <div>
-        <h1>Get User</h1>
-        <button onClick={getUser}>Submit</button>
-        {data ? <h1>Welcome Back {data.username}</h1> : null}
-      </div>
+      {user ? (
+        <>
+          <h1>You're logged in as {user.username}</h1>
+        </>
+      ) : (
+        <>
+          <Register dispatchUser={setUser} />
+          <Login dispatchUser={setUser} />
+        </>
+      )}
     </div>
   );
 }
-<script> console.log('hello')</script>;
 
 export default App;

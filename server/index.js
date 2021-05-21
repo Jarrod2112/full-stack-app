@@ -8,7 +8,8 @@ const passport = require("passport");
 const passportLocal = require("passport-local");
 const session = require("express-session");
 const morgan = require("morgan");
-const LocalStrategy = require('./middleware/local-strategy')
+const LocalStrategy = require("./middleware/local-strategy");
+const { ObjectId } = require("mongodb");
 
 // GET, POST, PUT, PATCH, DELETE
 async function run() {
@@ -43,10 +44,10 @@ async function run() {
   });
 
   // set up a way to deserialize a user
-  passport.deserializeUser(async function(id, cb) {
-    const collection = mongo.getInstance().collection('users');
+  passport.deserializeUser(async function (id, cb) {
+    const collection = mongo.getInstance().collection("users");
     const user = await collection.findOne({ _id: new ObjectId(id) });
-    if(!user) {
+    if (!user) {
       return cb("User not found!");
     }
     return cb(null, user);
@@ -61,7 +62,6 @@ async function run() {
   // Set up mongo connection
   // Set up API routes
   app.use("/api", apiRouter);
-
 
   // Handle an HTTP GET request to /
   const publicAssets = path.join(__dirname, "../public");
