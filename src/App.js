@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
+import { Navigation } from './components/navigation';
 import { Login } from "./components/login";
 import { Register } from "./components/register";
 import userResources from "./resources/users";
@@ -25,7 +26,7 @@ function App() {
     <div className="App">
       {user ? (
         <>
-          <h1>You're logged in as {user.username}</h1>
+          <Navigation username={user.username} />
         </>
       ) : (
         <>
