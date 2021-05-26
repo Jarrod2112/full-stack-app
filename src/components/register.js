@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import auth from "../resources/auth";
-import userResources from '../resources/users';
+import auth from "../resources/auth";           //
+import userResources from '../resources/users'; //
 
 export const Register = (props) => {
   const [username, setUsername] = useState("");
@@ -9,7 +9,7 @@ export const Register = (props) => {
   async function register() {
     await auth.register(username, password);
     const user = await userResources.currentUser();
-    props.dispatchUser(user);
+    props.dispatchUser(user);  //
   }
 
   return (
