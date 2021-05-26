@@ -7,6 +7,7 @@ const cors = require("cors");
 const passport = require("passport");
 const passportLocal = require("passport-local");
 const session = require("express-session");
+const mongoSession = require("connect-mongodb-session");
 const morgan = require("morgan");
 const LocalStrategy = require("./middleware/local-strategy");
 const { ObjectId } = require("mongodb");
@@ -16,6 +17,8 @@ async function run() {
   await mongo.initialize("mongodb://localhost:27017/");
 
   app.use(morgan("dev"));
+
+  // this parses POST bodies as JSON
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(
@@ -25,12 +28,20 @@ async function run() {
     })
   );
 
-  // this parses POST bodies as JSON
+  const MongoSessionStore = mongoSession(session);
+  const sessionStore = new MongoSessionStore({
+    uri: "mongodb://localhost:27017/",
+    databaseName: "social-media",
+    collection: 'sessions'
+  });
+
   app.use(
     session({
       secret: "secretcode",
       resave: true,
       saveUninitialized: true,
+      cookie: { maxAge: 604800000 },
+      store: sessionStore
     })
   );
 
