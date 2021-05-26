@@ -2,6 +2,7 @@ const { ObjectID, Timestamp } = require("bson");
 const { Router, json } = require("express");
 const { BSONType } = require("mongodb");
 const db = require("../mongo/MongoSingleton");
+module.exports = { Router };
 
 const postsRouter = Router();
 
@@ -14,7 +15,6 @@ postsRouter.post("/", async function (req, res) {
     timestamp: new Date(),
   };
   const result = await db.getInstance().collection("posts").insertOne(newPost);
-  return res.json(newPost);
 });
 /*
   There are a few ways for information/data to be passed in with a request:
@@ -39,18 +39,25 @@ postsRouter.post("/comments/:id", async function (req, res) {
   const username = req.body.username;
   let comment = req.body.comment;
   const newComment = {
-    username, 
+    username,
     comment,
     timestamp: new Date(),
     id: new ObjectID()
   }
   await collection.updateOne(
-      query,
-      { $push: { comments: newComment } }
+    query,
+    { $push: { comments: newComment } }
   )
   return res.json(newComment.id);
 })
 
+postsRouter.get("/:username", async function (req, res) {
+  const user = req.params.username;
+  const collection = db.getInstance().collection("posts");
+  let query = { username: user };
+  const result = await collection.findOne(query);
+  return res.json(result);
+});
 postsRouter.get("/:id", async function (req, res) {
   // get a post by id
   const id = ObjectID(req.params.id);
@@ -60,13 +67,6 @@ postsRouter.get("/:id", async function (req, res) {
   return res.json(cursor);
 });
 
-postsRouter.get("/:username", async function (req, res) {
-  const user = req.params.username;
-  const collection = db.getInstance().collection("posts");
-  let query = { username: user };
-  const result = await collection.findOne(query);
-  return res.json(result);
-});
 
 postsRouter.delete("/:id", async function (req, res) {
   const id = ObjectID(req.params.id);

@@ -8,7 +8,7 @@ const usersRouter = Router();
 usersRouter.get("/", async (req, res) => {
   const collection = db.getInstance().collection("users");
   if (!req.user) {
-    return res.status(404).send("NOT_FOUND");
+    return res.status(404).send("NOT_LOGGED_IN");
   }
 
   const user = await collection.findOne({ _id: new ObjectId(req.user._id) });
