@@ -1,7 +1,7 @@
-import axios from "axios";
+import http from "../utils/http";
 
 const currentUser = () => {
-  return axios.get("/api/users", { withCredentials: true }).then(response => response.data);
+  return http.get("/api/users");
 };
 
 export default { currentUser };
