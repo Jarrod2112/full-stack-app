@@ -77,6 +77,7 @@ postsRouter.delete("/:id", async function (req, res) {
 });
 
 // Post Functionality
+// GET /api/posts
 postsRouter.get("/", async function (req, res) {
   const result = await db.getInstance().collection("posts").find({}).toArray();
   return res.json(result);
