@@ -28,7 +28,7 @@ function App() {
       {user ? (
         <>
           <Navigation username={user.username} />
-          <List dispatchList={allPost.list} />
+          <List />
         </>
       ) : (
         <>

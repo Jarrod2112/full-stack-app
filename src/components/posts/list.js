@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import allPosts from "../resources/post";
-import postResources from "../resources/post"
+import allPosts from "../../resources/post";
 
-
-export const List = (props) => {
+export const List = () => {
     const [list, setList] = useState([]);
    
     async function getPosts() {
@@ -12,12 +10,12 @@ export const List = (props) => {
                 setList(response);
                 
                     
-                props.dispatchList(list);
-            })
+                })
     }
 
     return (
         <h1>{getPosts}</h1>
+        
     )
 
 }
