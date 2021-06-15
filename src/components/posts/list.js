@@ -17,7 +17,7 @@ export const List = () => {
       <h1>All Post</h1>
       {posts.map((post) => (
         <div key={post._id}>
-          <em>{post.post}</em> -{post.username} -{moment(post.timestamp).calendar()}
+          <em>{post.post}</em> -{post.username} -{moment(post.timestamp).calendar()} {moment(post.timestamp).format("LT")}
         </div>
       ))}
     </div>
