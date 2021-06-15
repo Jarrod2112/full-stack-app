@@ -1,21 +1,25 @@
-import React, { useState } from "react";
-import allPosts from "../../resources/post";
+import React, { useEffect, useState } from "react";
+import postResources from "../../resources/post";
+import moment from "moment";
+
 
 export const List = () => {
-    const [list, setList] = useState([]);
-   
-    async function getPosts() {
-      await allPosts.getPosts(list)
-            .then(response => {
-                setList(response);
-                
-                    
-                })
-    }
+  const [posts, setPosts] = useState([]);
 
-    return (
-        <h1>{getPosts}</h1>
-        
-    )
+  useEffect(() => {
+    postResources.allPosts().then((response) => {
+      setPosts(response);
+    });
+  }, []);
 
-}
+  return (
+    <div>
+      <h1>All Post</h1>
+      {posts.map((post) => (
+        <div key={post._id}>
+          <em>{post.post}</em> -{post.username} -{moment(post.timestamp).calendar()}
+        </div>
+      ))}
+    </div>
+  );
+};
