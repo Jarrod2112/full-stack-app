@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import createResources from "../../resources/create";
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-
+import createPost from "../../resources/post";
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 export function Create() {
   const [post, setPost] = useState("");
+
 
   return (
 
@@ -24,15 +23,13 @@ export function Create() {
                 />
               </div>
               <div class="d-md-flex d-grid gap-2 d-md-flex mb-1 justify-content-md-end">
-                <button onClick ={createResources.createPost()}  type="button" class="btn btn-primary me-md-1 btn-sm">Post</button>
-                </div>
-            </div> 
+                <button onClick={(e) => createPost(e.post)} type="button" class="btn btn-primary me-md-1 btn-sm">Post</button>
+              </div>
+            </div>
           </div>
-
           <div class="col">
           </div>
         </div>}
     </div>
   );
 }
-
