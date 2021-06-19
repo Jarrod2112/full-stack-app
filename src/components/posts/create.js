@@ -3,9 +3,13 @@ import postResources from "../../resources/post";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 
-export function Create() {
+export function Create() {  
   const [post, setPost] = useState("");
-
+  
+  function clearText(clear) {
+    Create();
+    setPost("");
+  }
 
   return (
 
@@ -17,13 +21,13 @@ export function Create() {
           <div class="col">
             <div class="card bg-dark text-white card w-100 mb-1">
               <div class="card bg-dark card w-100">
-                <textarea
+                <textarea class="textArea"
                   placeholder="Make a new post..."
                   onChange={(e) => setPost(e.target.value)}
                 />
               </div>
               <div class="d-md-flex d-grid gap-2 d-md-flex mb-1 justify-content-md-end">
-                <button onClick={() => postResources.createPost(post)} type="button" class="btn btn-primary me-md-1 btn-sm">Post</button>
+                <button onClick={() => {postResources.createPost(post); clearText();}} type="button" class="btn btn-primary me-md-1 btn-sm">Post</button>
               </div>
             </div>
           </div>
