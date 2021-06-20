@@ -28,7 +28,6 @@ function App() {
       {user ? (
         <>
           <Navigation username={user.username} />
-          <Create />
           <List/>
         </>
       ) : (

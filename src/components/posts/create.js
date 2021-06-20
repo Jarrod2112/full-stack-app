@@ -1,37 +1,39 @@
 import React, { useState } from "react";
 import postResources from "../../resources/post";
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 
-export function Create() {  
+
+export function Create(props) { 
   const [post, setPost] = useState("");
   
-  function clearText(clear) {
-    Create();
+  async function handleClick() {
+    await postResources.createPost(post);
     setPost("");
+    props.onPostCreate();
   }
 
   return (
 
-    <div class="conatiner">
+    <div className="container">
       {
-        <div class="row">
-          <div class="col">
+        <div className="row">
+          <div className="col">
           </div>
-          <div class="col">
-            <div class="card bg-dark text-white card w-100 mb-1">
-              <div class="card bg-dark card w-100">
-                <textarea class="textArea"
+          <div className="col">
+            <div className="card bg-dark text-white card w-100 mb-1">
+              <div className="card bg-dark card w-100">
+                <textarea className="textArea"
                   placeholder="Make a new post..."
+                  value={post}
                   onChange={(e) => setPost(e.target.value)}
                 />
               </div>
-              <div class="d-md-flex d-grid gap-2 d-md-flex mb-1 justify-content-md-end">
-                <button onClick={() => {postResources.createPost(post); clearText();}} type="button" class="btn btn-primary me-md-1 btn-sm">Post</button>
+              <div className="d-md-flex d-grid gap-2 d-md-flex mb-1 justify-content-md-end">
+                <button onClick={handleClick} type="button" className="btn btn-primary me-md-1 btn-sm">Post</button>
               </div>
             </div>
           </div>
-          <div class="col">
+          <div className="col">
           </div>
         </div>}
     </div>

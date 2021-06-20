@@ -8,13 +8,16 @@ const postsRouter = Router();
 
 postsRouter.post("/", async function (req, res) {
   const post = req.body.post;
-  const username = req.body.username;
   const newPost = {
     post: post,
-    username: username,
+    user: {
+      username: req.user.username,
+      id: req.user._id
+    },
     timestamp: new Date(),
   };
   const result = await db.getInstance().collection("posts").insertOne(newPost);
+  res.status(201).send({});
 });
 /*
   There are a few ways for information/data to be passed in with a request:
