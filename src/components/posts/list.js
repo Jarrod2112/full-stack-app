@@ -30,7 +30,7 @@ export const List = () => {
                   key={post._id}
                 >
                   <div />
-                  <em class="card-title text-center">{post.user.username}</em>
+                  <em class="card-title text-center">{post._id.username}</em>
                   <em class="card-text">{post.post} </em>
                   <em>
                     {moment(post.timestamp).format("M/DD/YYYY")}
