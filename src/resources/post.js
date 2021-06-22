@@ -10,7 +10,14 @@ const allPosts = () => {
     return http.get("/api/posts");
 };
 
+const createComment = (comment) => {
+    return http.post("/api/posts/comments/:id", {
+        comment: comment
+    });
+}
+
 export default {
     createPost,
-    allPosts
+    allPosts,
+    createComment,
 };

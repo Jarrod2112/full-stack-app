@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import postResources from "../../resources/post";
 import moment from "moment";
 import { Create } from "./create";
+import { Comment } from "./comment";
+
 
 export const List = () => {
   const [posts, setPosts] = useState([]);
@@ -37,6 +39,7 @@ export const List = () => {
                     <em> </em>
                     {moment(post.timestamp).format("HH:mm")}
                   </em>
+                  < Comment />
                 </div>
               ))}
             </div>

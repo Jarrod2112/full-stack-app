@@ -6,7 +6,7 @@ import { Login } from "./components/login";
 import { Register } from "./components/register";
 import userResources from "./resources/users";
 import { List } from "./components/posts/list";
-import { Create } from "./components/posts/create";
+
 function App() {
   // 1. a place to store the logged in user
   // 2. if there is no logged in user, show the register/login form
@@ -28,7 +28,7 @@ function App() {
       {user ? (
         <>
           <Navigation username={user.username} />
-          <List/>
+          <List />
         </>
       ) : (
         <>

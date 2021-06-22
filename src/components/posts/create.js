@@ -3,9 +3,9 @@ import postResources from "../../resources/post";
 
 
 
-export function Create(props) { 
+export function Create(props) {
   const [post, setPost] = useState("");
-  
+
   async function handleClick() {
     await postResources.createPost(post);
     setPost("");

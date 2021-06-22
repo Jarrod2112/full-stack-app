@@ -40,10 +40,10 @@ postsRouter.post("/comments/:id", async function (req, res) {
   const collection = db.getInstance().collection("posts");
   let query = { _id: id };
   const username = req.body.username;
-  let comment = req.body.comment;
+  const comment = req.body.comment;
   const newComment = {
     username,
-    comment,
+    comment: comment,
     timestamp: new Date(),
     id: new ObjectID()
   }
@@ -51,6 +51,7 @@ postsRouter.post("/comments/:id", async function (req, res) {
     query,
     { $push: { comments: newComment } }
   )
+  res.status(201).send({});
   return res.json(newComment.id);
 })
 
