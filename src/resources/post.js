@@ -11,7 +11,7 @@ const allPosts = () => {
 };
 
 const createComment = (comment) => {
-    return http.post("/api/posts/comments/:id", {
+    return http.post("/api/comments/", {
         comment: comment
     });
 }
