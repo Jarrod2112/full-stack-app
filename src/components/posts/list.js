@@ -39,7 +39,7 @@ export const List = () => {
                     <em> </em>
                     {moment(post.timestamp).format("HH:mm")}
                   </em>
-                  < Comment />
+                  <Comment post={post}/>
                 </div>
               ))}
             </div>

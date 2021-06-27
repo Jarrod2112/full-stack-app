@@ -8,6 +8,7 @@ const postsRouter = Router();
 
 postsRouter.post("/", async function (req, res) {
   const post = req.body.post;
+  const comment = req.body.comment;
   const newPost = {
     post: post,
     user: {
@@ -15,6 +16,7 @@ postsRouter.post("/", async function (req, res) {
       id: req.user._id
     },
     timestamp: new Date(),
+    comment: comment
   };
   const result = await db.getInstance().collection("posts").insertOne(newPost);
   res.status(201).send({});

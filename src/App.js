@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
 import { Navigation } from "./components/navigation";
 import { Login } from "./components/login";
 import { Register } from "./components/register";

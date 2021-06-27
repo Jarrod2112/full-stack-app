@@ -1,14 +1,14 @@
+
 import React, { useState } from "react";
 import postResources from "../../resources/post";
 
 
-export const Comment = () => {
-    const [comment, setComment] = useState("");
-
-    async function handleClick() {
-        await postResources.createComment(comment);
-    }
-
+export const Comment = (props) => {    
+    const [comment, setComment] = useState("");    
+    async function handleClick() {        
+        await postResources.createComment(comment, props.post._id);
+       }
+    
 
     return (
         <div className="container">

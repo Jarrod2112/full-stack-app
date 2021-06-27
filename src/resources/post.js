@@ -10,9 +10,10 @@ const allPosts = () => {
     return http.get("/api/posts");
 };
 
-const createComment = (comment) => {
-    return http.post("/api/comments/", {
-        comment: comment
+const createComment = (comment, postId) => {
+    return http.post(`/api/posts/comments/${postId}`, {
+        comment: comment,
+        
     });
 }
 
