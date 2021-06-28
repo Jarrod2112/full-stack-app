@@ -8,15 +8,14 @@ const postsRouter = Router();
 
 postsRouter.post("/", async function (req, res) {
   const post = req.body.post;
-  const comment = req.body.comment;
+
   const newPost = {
     post: post,
     user: {
       username: req.user.username,
-      id: req.user._id
+      id: req.user._id,
     },
     timestamp: new Date(),
-    comment: comment
   };
   const result = await db.getInstance().collection("posts").insertOne(newPost);
   res.status(201).send({});
@@ -35,7 +34,6 @@ postsRouter.post("/", async function (req, res) {
 // GET /api/posts/search?start=2021-01-01T00:00:00.000&end=2021-05-01T00:00:00.000
 // postsRouter.get("/search", (req, res) => { req.query.start })
 
-
 // POST /api/posts/comments/:id
 postsRouter.post("/comments/:id", async function (req, res) {
   const id = ObjectID(req.params.id);
@@ -47,15 +45,12 @@ postsRouter.post("/comments/:id", async function (req, res) {
     username,
     comment: comment,
     timestamp: new Date(),
-    id: new ObjectID()
-  }
-  await collection.updateOne(
-    query,
-    { $push: { comments: newComment } }
-  )
+    id: new ObjectID(),
+  };
+  await collection.updateOne(query, { $push: { comments: newComment } });
   res.status(201).send({});
   return res.json(newComment.id);
-})
+});
 
 postsRouter.get("/:username", async function (req, res) {
   const user = req.params.username;
@@ -72,7 +67,6 @@ postsRouter.get("/:id", async function (req, res) {
   const cursor = await collection.findOne(query);
   return res.json(cursor);
 });
-
 
 postsRouter.delete("/:id", async function (req, res) {
   const id = ObjectID(req.params.id);

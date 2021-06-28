@@ -4,9 +4,9 @@ import moment from "moment";
 import { Create } from "./create";
 import { Comment } from "./comment";
 
-
 export const List = () => {
   const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
 
   function loadPosts() {
     postResources.allPosts().then((response) => {
@@ -14,8 +14,18 @@ export const List = () => {
     });
   }
 
+  function loadComments() {
+    postResources.allComments().then((response) => {
+      setComments(response);
+    });
+  }
+
   useEffect(() => {
     loadPosts();
+  }, []);
+
+  useEffect(() => {
+    loadComments();
   }, []);
 
   return (
@@ -39,7 +49,7 @@ export const List = () => {
                     <em> </em>
                     {moment(post.timestamp).format("HH:mm")}
                   </em>
-                  <Comment post={post}/>
+                  <Comment onCommentCreate={loadComments} post={post} />
                 </div>
               ))}
             </div>
