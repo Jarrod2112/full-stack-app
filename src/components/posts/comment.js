@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import post from "../../resources/post";
 import postResources from "../../resources/post";
 
 export const Comment = (props) => {
@@ -8,7 +7,6 @@ export const Comment = (props) => {
     async function handleClick() {
         await postResources.createComment(comment, props.post._id);
         setComment("");
-        props.onCommentCreate();
     }
 
     return (

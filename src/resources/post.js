@@ -16,13 +16,8 @@ const createComment = (comment, postId) => {
         
     });
 }
-
-const allComments = () => {
-    return http.get("/api/posts/comments");
-}
 export default {
     createPost,
     allPosts,
-    createComment,
-    allComments,
+    createComment,    
 };
