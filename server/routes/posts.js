@@ -8,7 +8,6 @@ const postsRouter = Router();
 
 postsRouter.post("/", async function (req, res) {
   const post = req.body.post;
-
   const newPost = {
     post: post,
     user: {
@@ -43,13 +42,16 @@ postsRouter.post("/comments/:id", async function (req, res) {
   const username = req.body.username;
   const comment = req.body.comment;
   const newComment = {
+    user: {
+      username: req.user.username,
+      id: req.user._id,
+    },
     username,
     comment: comment,
     timestamp: new Date(),
     id: new ObjectID(),
   };
   await collection.updateOne(query, { $push: { comments: newComment } });
-  res.status(201).send({});
   return res.json(newComment.id);
 });
 
