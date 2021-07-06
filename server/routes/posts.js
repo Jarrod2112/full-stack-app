@@ -39,7 +39,6 @@ postsRouter.post("/comments/:id", async function (req, res) {
   const id = ObjectID(req.params.id);
   const collection = db.getInstance().collection("posts");
   let query = { _id: id };
-  const username = req.body.username;
   const comment = req.body.comment;
   const newComment = {
     user: {
