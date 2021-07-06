@@ -18,7 +18,7 @@ postsRouter.post("/", async function (req, res) {
     comments: []
   };
   const result = await db.getInstance().collection("posts").insertOne(newPost);
-  res.status(201).send({});
+  return res.status(201).send({});
 });
 /*
   There are a few ways for information/data to be passed in with a request:
