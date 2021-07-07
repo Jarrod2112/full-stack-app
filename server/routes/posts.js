@@ -8,13 +8,17 @@ const postsRouter = Router();
 
 postsRouter.post("/", async function (req, res) {
   const post = req.body.post;
-  const username = req.body.username;
   const newPost = {
     post: post,
-    username: username,
+    user: {
+      username: req.user.username,
+      id: req.user._id,
+    },
     timestamp: new Date(),
+    comments: []
   };
   const result = await db.getInstance().collection("posts").insertOne(newPost);
+  return res.status(201).send({});
 });
 /*
   There are a few ways for information/data to be passed in with a request:
@@ -30,26 +34,25 @@ postsRouter.post("/", async function (req, res) {
 // GET /api/posts/search?start=2021-01-01T00:00:00.000&end=2021-05-01T00:00:00.000
 // postsRouter.get("/search", (req, res) => { req.query.start })
 
-
 // POST /api/posts/comments/:id
 postsRouter.post("/comments/:id", async function (req, res) {
   const id = ObjectID(req.params.id);
   const collection = db.getInstance().collection("posts");
   let query = { _id: id };
-  const username = req.body.username;
-  let comment = req.body.comment;
+  const comment = req.body.comment;
   const newComment = {
+    user: {
+      username: req.user.username,
+      id: req.user._id,
+    },
     username,
-    comment,
+    comment: comment,
     timestamp: new Date(),
-    id: new ObjectID()
-  }
-  await collection.updateOne(
-    query,
-    { $push: { comments: newComment } }
-  )
+    id: new ObjectID(),
+  };
+  await collection.updateOne(query, { $push: { comments: newComment } });
   return res.json(newComment.id);
-})
+});
 
 postsRouter.get("/:username", async function (req, res) {
   const user = req.params.username;
@@ -66,7 +69,6 @@ postsRouter.get("/:id", async function (req, res) {
   const cursor = await collection.findOne(query);
   return res.json(cursor);
 });
-
 
 postsRouter.delete("/:id", async function (req, res) {
   const id = ObjectID(req.params.id);

@@ -3,6 +3,7 @@ const authRouter = require('./auth');
 const postsRouter = require('./posts');
 const usersRouter = require('./users');
 
+
 const apiRouter = Router();
 
 apiRouter.use('/posts', postsRouter);

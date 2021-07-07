@@ -1,40 +1,57 @@
 import React, { useEffect, useState } from "react";
 import postResources from "../../resources/post";
 import moment from "moment";
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-
+import { Create } from "./create";
+import { Comment } from "./comment";
+import post from "../../resources/post";
 
 export const List = () => {
-    const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
 
-    useEffect(() => {
-        postResources.allPosts().then((response) => {
-            setPosts(response);
-        });
-    }, []);
+  function loadPosts() {
+    postResources.allPosts().then((response) => {
+      setPosts(response);
+    });
+  }
 
-    return (
-        <div class="container" >
-            <h1>All Post</h1>
-            {
-                <div class="row">
-                    <div class="col">
-                    </div>
-                    <div class="col">
-                        {posts.map((post) => (
-                            <div class="card bg-dark text-white card w-100 mb-1" key={post._id}>
-                                <div />
-                                <em class="card-title text-center">{post.username}</em><em class="card-text">{post.post} </em><em>{moment(post.timestamp).format("M/DD/YYYY")}<em> </em>{moment(post.timestamp).format("HH:mm")}</em>
-                            </div>
-                        ))}
-                    </div>
-                    <div class="col"
-                    >
-                    </div>
-                </div>}
+
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  return (
+    <>
+      <div>
+        <Create onPostCreate={loadPosts} />
+        <div className="container">
+          <div className="row">
+            <div className="col"></div>
+            <div className="col">
+              {posts.map((post) => (
+                <div
+                  className="card bg-dark text-white card w-100 mb-1"
+                  key={post._id}
+                >
+                  <div />
+                  <i className="card-text">{post.post}</i>
+                  <em>
+                    {moment(post.timestamp).format("M/DD/YYYY HH:mm")}
+                  </em>
+                  <hr></hr>
+                  <ins><em>Comments</em></ins>
+                  <br></br>
+                  {/* Use the && operator to conditionally render something */}
+                  {post.comments &&
+                    post.comments.map((comment) => <small>{comment.comment}</small>)}
+                  <br></br>
+                  <Comment post={post} onCommentCreate={loadPosts} />
+                </div>
+              ))}
+            </div>
+            <div className="col"></div>
+          </div>
         </div>
-
-    );
+      </div>
+    </>
+  );
 };
