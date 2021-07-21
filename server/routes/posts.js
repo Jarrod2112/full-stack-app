@@ -45,7 +45,6 @@ postsRouter.post("/comments/:id", async function (req, res) {
       username: req.user.username,
       id: req.user._id,
     },
-    username,
     comment: comment,
     timestamp: new Date(),
     id: new ObjectID(),

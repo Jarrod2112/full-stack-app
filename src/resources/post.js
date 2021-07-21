@@ -16,6 +16,7 @@ const createComment = (comment, postId) => {
         
     });
 }
+
 export default {
     createPost,
     allPosts,
