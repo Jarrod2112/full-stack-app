@@ -42,7 +42,7 @@ export const List = () => {
                   <br></br>
                   {/* Use the && operator to conditionally render something */}
                   {post.comments &&
-                    post.comments.map((comment) => <small>{comment.comment}</small>)}
+                    post.comments.map((comment) => <small key={comment.comment}>{comment.comment}</small>)}
                   <br></br>
                   <Comment post={post} onCommentCreate={loadPosts} />
                 </div>
