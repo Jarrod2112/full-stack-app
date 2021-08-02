@@ -3,7 +3,7 @@ import postResources from "../../resources/post";
 import moment from "moment";
 import { Create } from "./create";
 import { Comment } from "./comment";
-import post from "../../resources/post";
+import { Delete } from "./delete";
 
 export const List = () => {
   const [posts, setPosts] = useState([]);
@@ -13,7 +13,6 @@ export const List = () => {
       setPosts(response);
     });
   }
-
 
   useEffect(() => {
     loadPosts();
@@ -34,17 +33,20 @@ export const List = () => {
                 >
                   <div />
                   <i className="card-text">{post.post}</i>
-                  <em>
-                    {moment(post.timestamp).format("M/DD/YYYY HH:mm")}
-                  </em>
+                  <em>{moment(post.timestamp).format("M/DD/YYYY HH:mm")}</em>
                   <hr></hr>
-                  <ins><em>Comments</em></ins>
+                  <ins>
+                    <em>Comments</em>
+                  </ins>
                   <br></br>
                   {/* Use the && operator to conditionally render something */}
                   {post.comments &&
-                    post.comments.map((comment) => <small key={comment.comment}>{comment.comment}</small>)}
+                    post.comments.map((comment) => (
+                      <small key={comment.comment}>{comment.comment}</small>
+                    ))}
                   <br></br>
                   <Comment post={post} onCommentCreate={loadPosts} />
+                  <Delete onPostDelete={loadPosts} />
                 </div>
               ))}
             </div>

@@ -6,6 +6,12 @@ const createPost = (post) => {
     });
 };
 
+const deletePost = (postId) => {
+    return http.post(`/api/posts/${postId}`, {
+        postId: postId
+    });
+}
+
 const allPosts = () => {
     return http.get("/api/posts");
 };
@@ -20,5 +26,6 @@ const createComment = (comment, postId) => {
 export default {
     createPost,
     allPosts,
-    createComment,    
+    createComment,
+    deletePost,    
 };
