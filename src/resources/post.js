@@ -1,24 +1,28 @@
-import http from '../utils/http';
+import http from "../utils/http";
 
 const createPost = (post) => {
-    return http.post("/api/posts", {
-        post: post
-    });
+  return http.post("/api/posts", {
+    post: post,
+  });
+};
+
+const deletePost = (postId) => {
+  return http.del(`/api/posts/${postId}`);
 };
 
 const allPosts = () => {
-    return http.get("/api/posts");
+  return http.get("/api/posts");
 };
 
 const createComment = (comment, postId) => {
-    return http.post(`/api/posts/comments/${postId}`, {
-        comment: comment,
-        
-    });
-}
+  return http.post(`/api/posts/comments/${postId}`, {
+    comment: comment,
+  });
+};
 
 export default {
-    createPost,
-    allPosts,
-    createComment,    
+  createPost,
+  allPosts,
+  createComment,
+  deletePost,
 };

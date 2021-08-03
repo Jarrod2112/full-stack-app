@@ -5,7 +5,6 @@ const mongo = require("./mongo/MongoSingleton");
 const apiRouter = require("./routes/api");
 const cors = require("cors");
 const passport = require("passport");
-const passportLocal = require("passport-local");
 const session = require("express-session");
 const mongoSession = require("connect-mongodb-session");
 const morgan = require("morgan");

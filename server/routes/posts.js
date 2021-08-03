@@ -6,6 +6,14 @@ module.exports = { Router };
 
 const postsRouter = Router();
 
+postsRouter.delete("/:id", async function (req, res) {
+  const id = new ObjectID(req.params.id);
+  const collection = db.getInstance().collection("posts");
+  let query = { _id: id };
+  const result = await collection.deleteOne(query);
+  return res.json(result);
+});
+
 postsRouter.post("/", async function (req, res) {
   const post = req.body.post;
   const newPost = {
@@ -69,13 +77,6 @@ postsRouter.get("/:id", async function (req, res) {
   return res.json(cursor);
 });
 
-postsRouter.delete("/:id", async function (req, res) {
-  const id = ObjectID(req.params.id);
-  const collection = db.getInstance().collection("posts");
-  let query = { _id: id };
-  const result = await collection.deleteOne(query);
-  return res.json(result);
-});
 
 // Post Functionality
 // GET /api/posts
