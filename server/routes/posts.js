@@ -7,7 +7,7 @@ module.exports = { Router };
 const postsRouter = Router();
 
 postsRouter.delete("/:id", async function (req, res) {
-  const id = ObjectID(req.params.id);
+  const id = new ObjectID(req.params.id);
   const collection = db.getInstance().collection("posts");
   let query = { _id: id };
   const result = await collection.deleteOne(query);

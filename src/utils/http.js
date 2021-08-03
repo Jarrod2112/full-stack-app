@@ -17,8 +17,21 @@ function post(url, data) {
         }
     }).then(res => res.json());
 }
+/**
+ * @param {string} url
+ */
+function del(url, data) {
+    return fetch(url, {
+        body: JSON.stringify(data),
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'Application/JSON'
+        }
+    }).then(res => res.json());
+    
+}
 const http = {
-    get, post
+    get, post, del
 }
 
 export default http;

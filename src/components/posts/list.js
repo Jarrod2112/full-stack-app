@@ -3,7 +3,6 @@ import postResources from "../../resources/post";
 import moment from "moment";
 import { Create } from "./create";
 import { Comment } from "./comment";
-import { Delete } from "./delete";
 
 export const List = () => {
   const [posts, setPosts] = useState([]);
@@ -12,6 +11,11 @@ export const List = () => {
     postResources.allPosts().then((response) => {
       setPosts(response);
     });
+  }
+
+  async function handleDeleteClick(postId) {
+    await postResources.deletePost(postId);
+    loadPosts();
   }
 
   useEffect(() => {
@@ -46,7 +50,13 @@ export const List = () => {
                     ))}
                   <br></br>
                   <Comment post={post} onCommentCreate={loadPosts} />
-                  <Delete onPostDelete={loadPosts} />
+                  <button
+                    onClick={() => handleDeleteClick(post._id)}
+                    type="button"
+                    className="btn btn-primary me-md-1 btn-sm "
+                  >
+                    Delete
+                  </button>
                 </div>
               ))}
             </div>
