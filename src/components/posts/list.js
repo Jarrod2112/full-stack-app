@@ -3,9 +3,13 @@ import postResources from "../../resources/post";
 import moment from "moment";
 import { Create } from "./create";
 import { Comment } from "./comment";
+import "../../App.css";
 
 export const List = () => {
   const [posts, setPosts] = useState([]);
+  const [isHidden, setIsHidden] = useState(true);
+
+  const toggleHidden = () => setIsHidden(!isHidden);
 
   function loadPosts() {
     postResources.allPosts().then((response) => {
@@ -36,6 +40,23 @@ export const List = () => {
                   key={post._id}
                 >
                   <div />
+                  <div className="d-md-flex d-grid gap-2 d-md-flex mb-1 justify-content-md-end">
+                    <button
+                      onClick={toggleHidden}
+                      className="btn btn-success me-md-1 btn-sm"
+                    >
+                      ...
+                    </button>
+                    <ul className={isHidden ? "hide" : ""}>
+                      <button
+                        onClick={() => handleDeleteClick(post._id)}
+                        type="button"
+                        className="btn btn-primary me-md-1 btn-sm "
+                      >
+                        Delete
+                      </button>
+                    </ul>
+                  </div>
                   <i className="card-text">{post.post}</i>
                   <em>{moment(post.timestamp).format("M/DD/YYYY HH:mm")}</em>
                   <hr></hr>
@@ -50,13 +71,6 @@ export const List = () => {
                     ))}
                   <br></br>
                   <Comment post={post} onCommentCreate={loadPosts} />
-                  <button
-                    onClick={() => handleDeleteClick(post._id)}
-                    type="button"
-                    className="btn btn-primary me-md-1 btn-sm "
-                  >
-                    Delete
-                  </button>
                 </div>
               ))}
             </div>

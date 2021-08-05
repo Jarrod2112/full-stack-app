@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import auth from "../resources/auth";           
-import userResources from '../resources/users';
+import auth from "../resources/auth";
+import userResources from "../resources/users";
 
 export const Register = (props) => {
   const [username, setUsername] = useState("");
