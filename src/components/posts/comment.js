@@ -11,23 +11,20 @@ export const Comment = (props) => {
   }
 
   return (
-    <div className="container">
-      <div className="card bg-dark card w-100">
-        <input
-          placeholder="Write a comment"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        ></input>
-      </div>
-      <div className="d-md-flex d-grid gap-2 d-md-flex mb-1 justify-content-md-end">
-        <button
-          onClick={handleClick}
-          type="button"
-          className="btn btn-primary me-md-1 btn-sm "
-        >
-          Comment
-        </button>
-      </div>
+    <div className="mx-2 mb-3">
+      <textarea
+        className="form-control mb-2"
+        placeholder="Write a comment"
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+      />
+      <button
+        onClick={handleClick}
+        type="button"
+        className="btn btn-primary me-md-1 btn-sm "
+      >
+        Comment
+      </button>
     </div>
   );
 };
