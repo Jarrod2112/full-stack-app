@@ -29,47 +29,69 @@ export const List = () => {
   return (
     <>
       <div>
-        <Create onPostCreate={loadPosts} />
         <div className="container">
           <div className="row">
             <div className="col"></div>
             <div className="col">
+              <Create onPostCreate={loadPosts} />
+            </div>
+            <div className="col"></div>
+          </div>
+          <div className="row">
+            <div className="col"></div>
+            <div className="col">
               {posts.map((post) => (
-                <div
-                  className="card bg-dark text-white card w-100 mb-1"
-                  key={post._id}
-                >
-                  <div />
-                  <div className="d-md-flex d-grid gap-2 d-md-flex mb-1 justify-content-md-end">
-                    <button
-                      onClick={toggleHidden}
-                      className="btn btn-success me-md-1 btn-sm"
-                    >
-                      ...
-                    </button>
-                    <ul className={isHidden ? "hide" : ""}>
-                      <button
-                        onClick={() => handleDeleteClick(post._id)}
-                        type="button"
-                        className="btn btn-primary me-md-1 btn-sm "
-                      >
-                        Delete
-                      </button>
-                    </ul>
+                <div className="card bg-dark text-white mb-1" key={post._id}>
+                  <div className="card-body">
+                    <div className="d-flex justify-content-between mb-1">
+                      <h5 className="card-title">{post.user.username}</h5>
+                      <div>
+                        <button
+                          onClick={toggleHidden}
+                          className="btn btn-outline-secondary dropdown-toggle"
+                        ></button>
+                        <ul
+                          className={
+                            (isHidden ? "" : "show ") + "dropdown-menu"
+                          }
+                        >
+                          <a
+                            onClick={() => handleDeleteClick(post._id)}
+                            type="button"
+                            role="button"
+                            className="dropdown-item"
+                          >
+                            Delete
+                          </a>
+                        </ul>
+                      </div>
+                    </div>
+                    <h6 className="card-subtitle">
+                      <em>
+                        {moment(post.timestamp).format("MM/DD/YYYY HH:mm")}
+                      </em>
+                    </h6>
+                    <p className="card-text">{post.post}</p>
                   </div>
-                  <i className="card-text">{post.post}</i>
-                  <em>{moment(post.timestamp).format("M/DD/YYYY HH:mm")}</em>
-                  <hr></hr>
-                  <ins>
-                    <em>Comments</em>
-                  </ins>
-                  <br></br>
-                  {/* Use the && operator to conditionally render something */}
-                  {post.comments &&
-                    post.comments.map((comment) => (
-                      <small key={comment.comment}>{comment.comment}</small>
-                    ))}
-                  <br></br>
+
+                  {post.comments && (
+                    <ul className="list-group mx-1">
+                      {post.comments.map((comment) => (
+                        <li
+                          className="list-group-item list-group-item-action bg-dark text-white"
+                          key={comment.id}
+                        >
+                          <div className="d-flex w-100 justify-content-between">
+                            <h6 className="mb-1">{comment.user.username}</h6>
+                            <small>{moment(comment.createdAt).format(
+                              "MM/DD/YYYY HH:mm"
+                            )}</small>
+                          </div>
+                          <p>{comment.comment}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <Comment post={post} onCommentCreate={loadPosts} />
                 </div>
               ))}
