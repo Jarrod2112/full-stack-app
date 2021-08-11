@@ -3,23 +3,17 @@ import postResources from "../../resources/post";
 import moment from "moment";
 import { Create } from "./create";
 import { Comment } from "./comment";
+import { DeleteBtn } from "../delete";
 import "../../App.css";
+import { PromiseProvider } from "mongoose";
 
 export const List = () => {
   const [posts, setPosts] = useState([]);
-  const [isHidden, setIsHidden] = useState(true);
-
-  const toggleHidden = () => setIsHidden(!isHidden);
 
   function loadPosts() {
     postResources.allPosts().then((response) => {
       setPosts(response);
     });
-  }
-
-  async function handleDeleteClick(postId) {
-    await postResources.deletePost(postId);
-    loadPosts();
   }
 
   useEffect(() => {
@@ -45,26 +39,7 @@ export const List = () => {
                   <div className="card-body">
                     <div className="d-flex justify-content-between mb-1">
                       <h5 className="card-title">{post.user.username}</h5>
-                      <div>
-                        <button
-                          onClick={toggleHidden}
-                          className="btn btn-outline-secondary dropdown-toggle"
-                        ></button>
-                        <ul
-                          className={
-                            (isHidden ? "" : "show ") + "dropdown-menu"
-                          }
-                        >
-                          <a
-                            onClick={() => handleDeleteClick(post._id)}
-                            type="button"
-                            role="button"
-                            className="dropdown-item"
-                          >
-                            Delete
-                          </a>
-                        </ul>
-                      </div>
+                      <DeleteBtn onPostDelete={loadPosts}/>
                     </div>
                     <h6 className="card-subtitle">
                       <em>
