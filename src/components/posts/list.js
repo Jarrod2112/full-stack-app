@@ -5,7 +5,6 @@ import { Create } from "./create";
 import { Comment } from "./comment";
 import { DeleteBtn } from "../delete";
 import "../../App.css";
-import { PromiseProvider } from "mongoose";
 
 export const List = () => {
   const [posts, setPosts] = useState([]);
@@ -39,7 +38,7 @@ export const List = () => {
                   <div className="card-body">
                     <div className="d-flex justify-content-between mb-1">
                       <h5 className="card-title">{post.user.username}</h5>
-                      <DeleteBtn onPostDelete={loadPosts}/>
+                      <DeleteBtn postId={post._id} onPostDelete={loadPosts} />
                     </div>
                     <h6 className="card-subtitle">
                       <em>
