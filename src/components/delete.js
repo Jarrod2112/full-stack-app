@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import postResources from "../resources/post"
 
 export const DeleteBtn = (props) => {
@@ -6,32 +6,49 @@ export const DeleteBtn = (props) => {
 
   const toggleHidden = () => setIsHidden(!isHidden);
 
+  const ref = useRef();
+
   async function handleDeleteClick() {
     await postResources.deletePost(props.postId);
     props.onPostDelete()
   }
 
-  return (
-  <div>
-    <button
-      onClick={toggleHidden}
-      className="btn btn-outline-secondary dropdown-toggle"
-    ></button>
-    <ul
-      className={
-        (isHidden ? "" : "show ") + "dropdown-menu"
+  useEffect(() => {
+    const outsideClickCheck = e => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsHidden(true);
       }
-    >
-      <a
-        onClick={handleDeleteClick}
-        key={props.postId}
-        type="button"
-        role="button"
-        className="dropdown-item"
+    }
+
+    document.addEventListener("mousedown", outsideClickCheck);
+
+    return () => {
+      document.removeEventListener("mousedown", outsideClickCheck)
+    }
+  }, [isHidden])
+
+  return (
+    <div>
+      <button
+        onClick={toggleHidden}
+        className="btn btn-outline-secondary dropdown-toggle"
+      ></button>
+      <ul
+        className={
+          (isHidden ? "" : "show ") + "dropdown-menu"
+        }
+        ref={ref}
       >
-        Delete
-      </a>
-    </ul>
-  </div>
+        <a
+          onClick={handleDeleteClick}
+          key={props.postId}
+          type="button"
+          role="button"
+          className="dropdown-item"
+        >
+          Delete
+        </a>
+      </ul>
+    </div>
   );
 }
