@@ -28,10 +28,11 @@ function del(url, data) {
             'Content-Type': 'Application/JSON'
         }
     }).then(res => res.json());
-    
+
 }
+
 const http = {
-    get, post, del
+    get, post, del,
 }
 
 export default http;

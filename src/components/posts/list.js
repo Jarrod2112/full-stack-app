@@ -3,7 +3,7 @@ import postResources from "../../resources/post";
 import moment from "moment";
 import { Create } from "./create";
 import { Comment } from "./comment";
-import { DeleteBtn } from "../delete";
+import { PostMenu } from "../post-menu";
 import "../../App.css";
 
 export const List = () => {
@@ -38,7 +38,7 @@ export const List = () => {
                   <div className="card-body">
                     <div className="d-flex justify-content-between mb-1">
                       <h5 className="card-title">{post.user.username}</h5>
-                      <DeleteBtn postId={post._id} onPostDelete={loadPosts} />
+                      <PostMenu postId={post._id} onPostDelete={loadPosts} />
                     </div>
                     <h6 className="card-subtitle">
                       <em>

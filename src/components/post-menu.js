@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import postResources from "../resources/post"
 
-export const DeleteBtn = (props) => {
+export const PostMenu = (props) => {
   const [isHidden, setIsHidden] = useState(true);
 
   const toggleHidden = () => setIsHidden(!isHidden);
