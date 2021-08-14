@@ -6,6 +6,16 @@ module.exports = { Router };
 
 const postsRouter = Router();
 
+postsRouter.put("/", async function (req, res) {
+  const post = req.body.post;
+  const newPost = {
+    post: post,
+    timestamp: new Date(),
+  };
+  const result = await db.getInstance().collection("posts").insertOne(newPost);
+  return res.status(201).send({});
+});
+
 postsRouter.delete("/:id", async function (req, res) {
   const id = new ObjectID(req.params.id);
   const collection = db.getInstance().collection("posts");
