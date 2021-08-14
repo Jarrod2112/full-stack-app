@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import postResources from "../resources/post"
+import postResources from "../resources/post";
 
 export const PostMenu = (props) => {
   const [isHidden, setIsHidden] = useState(true);
@@ -10,22 +10,22 @@ export const PostMenu = (props) => {
 
   async function handleDeleteClick() {
     await postResources.deletePost(props.postId);
-    props.onPostDelete()
+    props.onPostDelete();
   }
 
   useEffect(() => {
-    const outsideClickCheck = e => {
+    const outsideClickCheck = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
         setIsHidden(true);
       }
-    }
+    };
 
     document.addEventListener("mousedown", outsideClickCheck);
 
     return () => {
-      document.removeEventListener("mousedown", outsideClickCheck)
-    }
-  }, [isHidden])
+      document.removeEventListener("mousedown", outsideClickCheck);
+    };
+  }, [isHidden]);
 
   return (
     <div>
@@ -33,12 +33,7 @@ export const PostMenu = (props) => {
         onClick={toggleHidden}
         className="btn btn-outline-secondary dropdown-toggle"
       ></button>
-      <ul
-        className={
-          (isHidden ? "" : "show ") + "dropdown-menu"
-        }
-        ref={ref}
-      >
+      <ul className={(isHidden ? "" : "show ") + "dropdown-menu"} ref={ref}>
         <a
           onClick={handleDeleteClick}
           key={props.postId}
@@ -51,4 +46,4 @@ export const PostMenu = (props) => {
       </ul>
     </div>
   );
-}
+};
