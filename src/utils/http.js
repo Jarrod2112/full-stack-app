@@ -31,6 +31,25 @@ function del(url, data) {
 
 }
 
+/**
+ * Sends an HTTP PATCH request.
+ * 
+ * HTTP PATCH is used to modify part of an existing resource.
+ */
+function patch(url, data) {
+    return fetch(url, {
+        body: JSON.stringify(data),
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'Application/JSON'
+        }
+    }).then(res => res.json());
+}
+/**
+ * Sends an HTTP PUT request.
+ * 
+ * HTTP PUT is used to replace an existing resource.
+ */
 function put(url, data) {
     return fetch(url, {
         body: JSON.stringify(data),
@@ -42,7 +61,7 @@ function put(url, data) {
 }
 
 const http = {
-    get, post, del, put,
+    get, post, del, put, patch,
 }
 
 export default http;

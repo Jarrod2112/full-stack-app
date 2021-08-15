@@ -6,14 +6,24 @@ module.exports = { Router };
 
 const postsRouter = Router();
 
-postsRouter.put("/", async function (req, res) {
-  const post = req.body.post;
-  const newPost = {
-    post: post,
-    timestamp: new Date(),
-  };
-  const result = await db.getInstance().collection("posts").insertOne(newPost);
-  return res.status(201).send({});
+postsRouter.patch("/:id", async function (req, res) {
+  // gather post id, new post text, user id
+  const newText = req.body.post; // the edited post text
+  const postId = req.params.id; // the post we want to edit
+  const userId = req.user._id; // the current user
+
+  const collection = db.getInstance().collection("posts");
+  // reject if the current user didn't create the existing post,
+  // i.e. current user id doesn't match the user id on the post we're trying to edit
+  const query = { _id: new ObjectID(postId) };
+  const existingPost = await collection.findOne(query);
+  if (userId !== existingPost.user.id) {
+    return res.status(403).send("FORBIDDEN");
+  }
+
+  // update the post
+  await collection.updateOne(query, { $set: { post: newText } });
+  return res.status(200).send({});
 });
 
 postsRouter.delete("/:id", async function (req, res) {
@@ -33,7 +43,7 @@ postsRouter.post("/", async function (req, res) {
       id: req.user._id,
     },
     timestamp: new Date(),
-    comments: []
+    comments: [],
   };
   const result = await db.getInstance().collection("posts").insertOne(newPost);
   return res.status(201).send({});
@@ -86,7 +96,6 @@ postsRouter.get("/:id", async function (req, res) {
   const cursor = await collection.findOne(query);
   return res.json(cursor);
 });
-
 
 // Post Functionality
 // GET /api/posts
