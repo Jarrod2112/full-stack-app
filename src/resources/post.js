@@ -6,9 +6,9 @@ const createPost = (post) => {
   });
 };
 
-const editPost = (post, postId) => {
-  return http.put(`/api/posts/${postId}`, {
-    post: post,
+const editPost = (newText, postId) => {
+  return http.patch(`/api/posts/${postId}`, {
+    newText: newText,
   });
 };
 
