@@ -8,19 +8,19 @@ const postsRouter = Router();
 
 postsRouter.patch("/:id", async function (req, res) {
   // gather post id, new post text, user id
-  const newText = req.body.post; // the edited post text
+  const newText = req.body.newText; // the edited post text
   const postId = req.params.id; // the post we want to edit
   const userId = req.user._id; // the current user
 
   const collection = db.getInstance().collection("posts");
   // reject if the current user didn't create the existing post,
   // i.e. current user id doesn't match the user id on the post we're trying to edit
-  const query = { _id: new ObjectID(postId) };
+  const query = { _id: new ObjectID(postId) }
   const existingPost = await collection.findOne(query);
-  if (userId !== existingPost.user.id) {
+  if (!userId.equals(existingPost.user.id)) {
     return res.status(403).send("FORBIDDEN");
   }
-
+  
   // update the post
   await collection.updateOne(query, { $set: { post: newText } });
   return res.status(200).send({});

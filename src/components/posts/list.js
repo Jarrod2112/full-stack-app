@@ -38,7 +38,7 @@ export const List = () => {
                   <div className="card-body">
                     <div className="d-flex justify-content-between mb-1">
                       <h5 className="card-title">{post.user.username}</h5>
-                      <PostMenu postId={post._id} onPostDelete={loadPosts} />
+                      <PostMenu postId={post._id} onPostDelete={loadPosts} onEdit={loadPosts} />
                     </div>
                     <h6 className="card-subtitle">
                       <em>

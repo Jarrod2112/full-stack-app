@@ -16,7 +16,8 @@ export const PostMenu = (props) => {
   }
 
   async function handleEditClick() {
-    await postResources.editPost(newText, props.postId)    
+    await postResources.editPost(newText, props.postId)
+    props.onEdit();    
   }
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export const PostMenu = (props) => {
                     className="btn btn-outline-secondary dropdown-toggle"
                     type="button"
                     role="button"
+                    value={newText}
                     className="dropdown-item">
                     Save
                   </div>
