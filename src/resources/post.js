@@ -6,6 +6,12 @@ const createPost = (post) => {
   });
 };
 
+const editPost = (newText, postId) => {
+  return http.patch(`/api/posts/${postId}`, {
+    newText: newText,
+  });
+};
+
 const deletePost = (postId) => {
   return http.del(`/api/posts/${postId}`);
 };
@@ -25,4 +31,5 @@ export default {
   allPosts,
   createComment,
   deletePost,
+  editPost,
 };
