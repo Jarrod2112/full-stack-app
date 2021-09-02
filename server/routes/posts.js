@@ -6,6 +6,15 @@ module.exports = { Router };
 
 const postsRouter = Router();
 
+postsRouter.delete("/comments/:id", async function (req, res) {
+  const commentId = req.params.commentId;
+  const collection = db.getInstance().collection("posts");
+  const id = { _id: new ObjectID(commentId) }
+  let query = { _id: id };
+  const result = await collection.deleteOne(query);
+  return res.json(result);
+})
+
 postsRouter.patch("/:id", async function (req, res) {
   // gather post id, new post text, user id
   const newText = req.body.newText; // the edited post text
@@ -20,7 +29,7 @@ postsRouter.patch("/:id", async function (req, res) {
   if (!userId.equals(existingPost.user.id)) {
     return res.status(403).send("FORBIDDEN");
   }
-  
+
   // update the post
   await collection.updateOne(query, { $set: { post: newText } });
   return res.status(200).send({});

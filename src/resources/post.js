@@ -22,8 +22,12 @@ const allPosts = () => {
 
 const createComment = (comment, postId) => {
   return http.post(`/api/posts/comments/${postId}`, {
-    comment: comment,
+    comment: comment
   });
+};
+
+const deleteComment = (commentId, postId) => {
+  return http.del(`/api/posts/comments/${postId}/${commentId}/`,);
 };
 
 export default {
@@ -32,4 +36,5 @@ export default {
   createComment,
   deletePost,
   editPost,
+  deleteComment,
 };

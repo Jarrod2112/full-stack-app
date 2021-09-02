@@ -3,6 +3,8 @@ import postResources from "../../resources/post";
 
 export const Comment = (props) => {
   const [comment, setComment] = useState("");
+  const [newText, setNewText] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   async function handleClick() {
     await postResources.createComment(comment, props.post._id);
