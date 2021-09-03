@@ -6,7 +6,7 @@ module.exports = { Router };
 
 const postsRouter = Router();
 
-postsRouter.delete("/comments/:postId/:commentId/", async function (req, res) {
+postsRouter.delete("/comments/:postId/:commentId", async function (req, res) {
   const commentId = req.params.commentId;
   const postId = req.params.postId;
   const collection = db.getInstance().collection("posts");
