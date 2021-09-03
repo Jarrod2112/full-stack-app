@@ -6,12 +6,13 @@ module.exports = { Router };
 
 const postsRouter = Router();
 
-postsRouter.delete("/comments/:id", async function (req, res) {
+postsRouter.delete("/comments/:postId/:commentId/", async function (req, res) {
   const commentId = req.params.commentId;
+  const postId = req.params.postId;
   const collection = db.getInstance().collection("posts");
-  const id = { _id: new ObjectID(commentId) }
+  const id = { _id: new ObjectID(postId) }
   let query = { _id: id };
-  const result = await collection.deleteOne(query);
+  const result = await collection.updateOne(query, { $pull: {comments: { id: commentId } }});
   return res.json(result);
 })
 

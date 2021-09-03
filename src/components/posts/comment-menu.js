@@ -11,7 +11,7 @@ export const CommentMenu = (props) => {
   const ref = useRef();
 
   async function handleDeleteClick() {
-    await postResources.deleteComment(props.postId, props.commentId);
+    await postResources.deleteComment(props.commentId, props.postId);
     props.onCommentDelete();
   }
 
