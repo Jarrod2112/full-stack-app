@@ -22,13 +22,19 @@ const allPosts = () => {
 
 const createComment = (comment, postId) => {
   return http.post(`/api/posts/comments/${postId}`, {
-    comment: comment
+    comment: comment,
   });
 };
 
 const deleteComment = (commentId, postId) => {
-  return http.del(`/api/posts/comments/${postId}/${commentId}/`,);
+  return http.del(`/api/posts/comments/${postId}/${commentId}`);
 };
+
+const editComment = (newText, postId, commentId) => {
+  return http.patch(`/api/posts/comments/${postId}/${commentId}`, {
+    newText: newText,
+  })
+}
 
 export default {
   createPost,
@@ -37,4 +43,5 @@ export default {
   deletePost,
   editPost,
   deleteComment,
+  editComment,
 };

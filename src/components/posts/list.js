@@ -53,10 +53,13 @@ export const List = () => {
                     <ul className="list-group mx-1">
                       {post.comments.map((comment) => (
                         <li
-                        className="list-group-item list-group-item-action bg-dark text-white"
-                        key={comment.id}
+                          className="list-group-item list-group-item-action bg-dark text-white"
+                          key={comment.id}
                         >
-                          <CommentMenu postId={post._id} commentId={comment.id} onCommentDelete={loadPosts}/>
+                          <div className="d-flex justify-content-between mb-1">
+                            <h5 className="card-title">{post.user.username}</h5>
+                            <CommentMenu postId={post._id} commentId={comment.id} onCommentDelete={loadPosts} onCommentEdit={loadPosts} />
+                          </div>
                           <div className="d-flex w-100 justify-content-between">
                             <h6 className="mb-1">{comment.user.username}</h6>
                             <small>{moment(comment.createdAt).format(

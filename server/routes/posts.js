@@ -6,9 +6,19 @@ module.exports = { Router };
 
 const postsRouter = Router();
 
-postsRouter.delete("/comments/:postId/:commentId", async function (req, res) {
-  const commentId = req.params.commentId;
+postsRouter.patch("/comments/:postId/:commentId", async function (req, res) {
   const postId = req.params.postId;
+  const commentId = req.params.commentId;
+  collection = db.getInstance().collection("posts");
+  const id = { _id: new ObjectID(postId) }
+  let query = { _id: id };
+  const result = await collection.updateOne(query, { $set: {comments: { id: commentId } }})
+  return res.json(result);
+})
+
+postsRouter.delete("/comments/:postId/:commentId", async function (req, res) {
+  const postId = req.params.postId;
+  const commentId = req.params.commentId;
   const collection = db.getInstance().collection("posts");
   const id = { _id: new ObjectID(postId) }
   let query = { _id: id };

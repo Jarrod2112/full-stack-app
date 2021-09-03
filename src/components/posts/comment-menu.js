@@ -13,11 +13,13 @@ export const CommentMenu = (props) => {
   async function handleDeleteClick() {
     await postResources.deleteComment(props.commentId, props.postId);
     props.onCommentDelete();
+    toggleHidden();
   }
 
     async function handleEditClick() {
-    await postResources.editComment(newText, props.postId)
-    props.onEdit();    
+    await postResources.editComment(newText, props.postId, props.commentId)
+    props.onCommentEdit();
+    toggleHidden();    
   }
 
   useEffect(() => {

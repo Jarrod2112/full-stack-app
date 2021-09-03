@@ -13,11 +13,13 @@ export const PostMenu = (props) => {
   async function handleDeleteClick() {
     await postResources.deletePost(props.postId);
     props.onPostDelete();
+    toggleHidden();
   }
 
   async function handleEditClick() {
     await postResources.editPost(newText, props.postId)
     props.onEdit();    
+    toggleHidden();
   }
 
   useEffect(() => {
@@ -45,7 +47,6 @@ export const PostMenu = (props) => {
           onClick={handleDeleteClick}
           key={props.postId}
           type="button"
-          role="button"
           className="dropdown-item"
         >
           Delete
