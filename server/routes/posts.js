@@ -21,8 +21,7 @@ postsRouter.delete("/comments/:postId/:commentId", async function (req, res) {
   const commentId = req.params.commentId;
   const collection = db.getInstance().collection("posts");
   const id = { _id: new ObjectID(postId) }
-  let query = { _id: id };
-  const result = await collection.updateOne(query, { $pull: {comments: { id: commentId } }});
+  const result = await collection.updateOne(id, { $pull: {comments: { id: new ObjectID(commentId) } }});
   return res.json(result);
 })
 
