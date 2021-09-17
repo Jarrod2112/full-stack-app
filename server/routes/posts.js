@@ -9,10 +9,10 @@ const postsRouter = Router();
 postsRouter.patch("/comments/:postId/:commentId", async function (req, res) {
   const postId = req.params.postId;
   const commentId = req.params.commentId;
-  collection = db.getInstance().collection("posts");
-  const id = { _id: new ObjectID(postId) }
-  let query = { _id: id };
-  const result = await collection.updateOne(query, { $set: {comments: { id: commentId } }})
+  const newComment = req.body.newText;
+  const collection = db.getInstance().collection("posts");
+  const query = { _id: new ObjectID(postId), "comments.id": new ObjectID(commentId) };
+  const result = await collection.updateOne(query, { $set: { "comments.$.comment": newComment } } );
   return res.json(result);
 })
 
@@ -21,7 +21,7 @@ postsRouter.delete("/comments/:postId/:commentId", async function (req, res) {
   const commentId = req.params.commentId;
   const collection = db.getInstance().collection("posts");
   const id = { _id: new ObjectID(postId) }
-  const result = await collection.updateOne(id, { $pull: {comments: { id: new ObjectID(commentId) } }});
+  const result = await collection.updateOne(id, { $pull: { comments: { id: new ObjectID(commentId) } } });
   return res.json(result);
 })
 

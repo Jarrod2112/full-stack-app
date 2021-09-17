@@ -26,15 +26,16 @@ const createComment = (comment, postId) => {
   });
 };
 
-const deleteComment = (commentId, postId) => {
-  return http.del(`/api/posts/comments/${postId}/${commentId}`);
-};
-
 const editComment = (newText, postId, commentId) => {
   return http.patch(`/api/posts/comments/${postId}/${commentId}`, {
     newText: newText,
   })
 }
+
+const deleteComment = (commentId, postId) => {
+  return http.del(`/api/posts/comments/${postId}/${commentId}`);
+};
+
 
 export default {
   createPost,
