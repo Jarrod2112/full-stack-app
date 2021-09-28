@@ -16,10 +16,10 @@ export const CommentMenu = (props) => {
     toggleHidden();
   }
 
-    async function handleEditClick() {
+  async function handleEditClick() {
     await postResources.editComment(newText, props.postId, props.commentId)
     props.onCommentEdit();
-    toggleHidden();    
+    toggleHidden();
   }
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const CommentMenu = (props) => {
         className="btn btn-outline-secondary dropdown-toggle"
       ></button>
       <ul className={(isHidden ? "" : "show ") + "dropdown-menu"} ref={ref}>
-        <a
+        <div
           onClick={handleDeleteClick}
           key={props.commentId}
           type="button"
@@ -51,36 +51,34 @@ export const CommentMenu = (props) => {
           className="dropdown-item"
         >
           Delete
-        </a>
-        <a>
-          <div className="Edit">
-            {isEditing ? (
-              <textarea value={newText} onChange={(e) => setNewText(e.target.value)} />
-            ) : (
-              <p>{newText}</p>
-            )}
-            <button onClick={() => setIsEditing(!isEditing)}
-              className="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              role="button"
-              className="dropdown-item">
-              {isEditing ?
-                (
-                  <div
-                    onClick={() => handleEditClick()}
-                    className="btn btn-outline-secondary dropdown-toggle"
-                    type="button"
-                    role="button"
-                    value={newText}
-                    className="dropdown-item">
-                    Save
-                  </div>
-                )
-                :
-                "Edit"}
-            </button>
-          </div>
-        </a>
+        </div>
+        <div>
+          {isEditing ? (
+            <textarea value={newText} onChange={(e) => setNewText(e.target.value)} />
+          ) : (
+            <p>{newText}</p>
+          )}
+          <button onClick={() => setIsEditing(!isEditing)}
+            className="btn btn-outline-secondary dropdown-toggle"
+            type="button"
+            role="button"
+            className="dropdown-item">
+            {isEditing ?
+              (
+                <span
+                  onClick={() => handleEditClick()}
+                  className="btn btn-outline-secondary dropdown-toggle"
+                  type="button"
+                  role="button"
+                  value={newText}
+                  className="dropdown-item">
+                  Save
+                </span>
+              )
+              :
+              "Edit"}
+          </button>
+        </div>
       </ul>
     </div>
   );
