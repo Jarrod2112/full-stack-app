@@ -6,6 +6,25 @@ module.exports = { Router };
 
 const postsRouter = Router();
 
+postsRouter.patch("/comments/:postId/:commentId", async function (req, res) {
+  const postId = req.params.postId;
+  const commentId = req.params.commentId;
+  const newComment = req.body.newText;
+  const collection = db.getInstance().collection("posts");
+  const query = { _id: new ObjectID(postId), "comments.id": new ObjectID(commentId) };
+  const result = await collection.updateOne(query, { $set: { "comments.$.comment": newComment } } );
+  return res.json(result);
+})
+
+postsRouter.delete("/comments/:postId/:commentId", async function (req, res) {
+  const postId = req.params.postId;
+  const commentId = req.params.commentId;
+  const collection = db.getInstance().collection("posts");
+  const id = { _id: new ObjectID(postId) }
+  const result = await collection.updateOne(id, { $pull: { comments: { id: new ObjectID(commentId) } } });
+  return res.json(result);
+})
+
 postsRouter.patch("/:id", async function (req, res) {
   // gather post id, new post text, user id
   const newText = req.body.newText; // the edited post text
@@ -20,7 +39,7 @@ postsRouter.patch("/:id", async function (req, res) {
   if (!userId.equals(existingPost.user.id)) {
     return res.status(403).send("FORBIDDEN");
   }
-  
+
   // update the post
   await collection.updateOne(query, { $set: { post: newText } });
   return res.status(200).send({});

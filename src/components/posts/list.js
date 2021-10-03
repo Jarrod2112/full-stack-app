@@ -5,6 +5,8 @@ import { Create } from "./create";
 import { Comment } from "./comment";
 import { PostMenu } from "../post-menu";
 import "../../App.css";
+import { CommentMenu } from "./comment-menu";
+
 
 export const List = () => {
   const [posts, setPosts] = useState([]);
@@ -47,7 +49,6 @@ export const List = () => {
                     </h6>
                     <p className="card-text">{post.post}</p>
                   </div>
-
                   {post.comments && (
                     <ul className="list-group mx-1">
                       {post.comments.map((comment) => (
@@ -55,6 +56,10 @@ export const List = () => {
                           className="list-group-item list-group-item-action bg-dark text-white"
                           key={comment.id}
                         >
+                          <div className="d-flex justify-content-between mb-1">
+                            <h5 className="card-title">{post.user.username}</h5>
+                            <CommentMenu postId={post._id} commentId={comment.id} onCommentDelete={loadPosts} onCommentEdit={loadPosts} />
+                          </div>
                           <div className="d-flex w-100 justify-content-between">
                             <h6 className="mb-1">{comment.user.username}</h6>
                             <small>{moment(comment.createdAt).format(
