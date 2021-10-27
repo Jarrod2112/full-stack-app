@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Link, NavLink, Route } from 'react-router-dom';
+import { Profile } from './posts/profile';
+
 
 
 export const Navigation = (props) => {
@@ -17,7 +20,13 @@ export const Navigation = (props) => {
                         <li className="nav-item">
                             <a className="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
-                        <li className="nav-item"><a className="nav-link active" aria-current="page" href="#">Logged in as {props.username}</a></li>
+                        <Router>
+                            <ul className="nav-item">
+                                <i className="nav-link active" aria-current="page" href="#">
+                                    <Link to="/profile"> <li>{props.username}</li>   </Link>
+                                </i>
+                            </ul>
+                        </Router>
                     </ul>
                 </div>
             </div>
