@@ -24,12 +24,6 @@ function App() {
       .catch();
   }, []);
 
-  ReactDOM.render(
-    <Router>
-      <Route path="/profile" render={() => <Profile />} />
-    </Router>
-  )
-
   return (
     <div className="App">
       {user ? (

@@ -18,15 +18,11 @@ export const Navigation = (props) => {
                 <div className={"navbar-collapse" + (isCollapsed ? " collapse" : "")} id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="#">Home</a>
+                            <Link to="/" className="nav-link active" aria-current="page" href="#">Home</Link>
                         </li>
-                        <Router>
-                            <ul className="nav-item">
-                                <i className="nav-link active" aria-current="page" href="#">
-                                    <Link to="/profile"> <li>{props.username}</li>   </Link>
-                                </i>
-                            </ul>
-                        </Router>
+                        <li className="nav-item">
+                            <Link to="/profile" className="nav-link active" aria-current="page">{props.username}</Link>
+                        </li>
                     </ul>
                 </div>
             </div>
