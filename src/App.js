@@ -5,7 +5,8 @@ import { Login } from "./components/login";
 import { Register } from "./components/register";
 import userResources from "./resources/users";
 import { List } from "./components/posts/list";
-
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Profile } from "./components/posts/profile";
 function App() {
   // 1. a place to store the logged in user
   // 2. if there is no logged in user, show the register/login form
@@ -26,8 +27,13 @@ function App() {
     <div className="App">
       {user ? (
         <>
-          <Navigation username={user.username} />
-          <List />
+          <Router>
+            <Navigation username={user.username} />
+            <Switch>
+              <Route path="/" exact component={List} />
+              <Route path="/profile" exact component={Profile} />
+            </Switch>
+          </Router>
         </>
       ) : (
         <>
