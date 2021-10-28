@@ -7,7 +7,6 @@ import userResources from "./resources/users";
 import { List } from "./components/posts/list";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Profile } from "./components/posts/profile";
-import { ReactDOM } from "react-dom";
 function App() {
   // 1. a place to store the logged in user
   // 2. if there is no logged in user, show the register/login form
