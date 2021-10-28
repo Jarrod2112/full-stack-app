@@ -6,3 +6,6 @@ _Placeholder project for a full-stack Node app_
 - HTML5 frontend. Library/framework TBD
 - MongoDB data storage
 - Passport JS auth, either session or JWT
+- User Posts implementation, Update, Delete, etc.
+- Profile page
+
