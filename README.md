@@ -11,7 +11,7 @@ _Placeholder project for a full-stack Node app_
 
 - Express REST API
 - HTML5 frontend. Library/framework TBD
-- MongoDB data storagenpm
+- MongoDB data storage 
 - Passport JS auth, either session or JWT
 
 <!-- CONTRIBUTING -->
