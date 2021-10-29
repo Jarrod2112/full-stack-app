@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require("path");
 const express = require("express");
 const app = express();
@@ -13,7 +14,7 @@ const { ObjectId } = require("mongodb");
 
 // GET, POST, PUT, PATCH, DELETE
 async function run() {
-  await mongo.initialize("mongodb://localhost:27017/");
+  await mongo.initialize(process.env.MONGO_CONNECTION_STRING);
 
   app.use(morgan("dev"));
 
@@ -29,8 +30,7 @@ async function run() {
 
   const MongoSessionStore = mongoSession(session);
   const sessionStore = new MongoSessionStore({
-    uri: "mongodb://localhost:27017/",
-    databaseName: "social-media",
+    uri: process.env.MONGO_CONNECTION_STRING,
     collection: 'sessions'
   });
 
