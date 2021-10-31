@@ -13,6 +13,7 @@ usersRouter.get("/", async (req, res) => {
   }
 
   const user = await collection.findOne({ _id: new ObjectId(req.user._id) });
+
   if (!user) {
     res.status(404).send("NOT_FOUND");
   }
