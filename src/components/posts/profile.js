@@ -13,13 +13,14 @@ export const Profile = (props) => {
     await userResources.saveProfile(firstName, lastName, phoneNumber, email, birthday);
   }
 
-  async function getCurrentUser(){
-    const user = await userResources.currentUser();
-    props.dispatchUser(user);
+  async function getCurrentProfile(){
+   const profile = await userResources.getProfile();
+   console.log(profile);
+   return profile;   
   }
 
   useEffect(() => {
-    getCurrentUser();
+    getCurrentProfile();
   }, []);
 
   return (
