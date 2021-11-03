@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Link, NavLink, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter as Link, useHistory } from 'react-router-dom';
 import { FaUserFriends } from 'react-icons/fa';
 import { FriendRequestsResources } from '../resources/friend-requests';
 

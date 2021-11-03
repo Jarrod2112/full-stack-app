@@ -1,4 +1,4 @@
-import { use } from 'passport';
+import { getSuggestedQuery } from '@testing-library/react';
 import { React, useEffect, useState } from 'react';
 import userResources from '../../resources/users';
 
@@ -13,9 +13,14 @@ export const Profile = (props) => {
     await userResources.saveProfile(firstName, lastName, phoneNumber, email, birthday);
   }
 
+  async function getCurrentUser(){
+    const user = await userResources.currentUser();
+    props.dispatchUser(user);
+  }
+
   useEffect(() => {
-    
-  })
+    getCurrentUser();
+  }, []);
 
   return (
     <div>
