@@ -1,4 +1,3 @@
-import { getSuggestedQuery } from '@testing-library/react';
 import { React, useEffect, useState } from 'react';
 import userResources from '../../resources/users';
 
@@ -8,15 +7,16 @@ export const Profile = (props) => {
   const [phoneNumber, setPhonenumber] = useState("");
   const [email, setEmail] = useState("");
   const [birthday, setBirthday] = useState("");
+  const [profile, setProfile] = useState("");
 
   async function handleClick() {
     await userResources.saveProfile(firstName, lastName, phoneNumber, email, birthday);
   }
 
-  async function getCurrentProfile(){
-   const profile = await userResources.getProfile();
-   console.log(profile);
-   return profile;   
+  async function getCurrentProfile() {
+    await userResources.getProfile().then((response) => {
+      setProfile(response);
+    });
   }
 
   useEffect(() => {
