@@ -3,9 +3,9 @@ _Placeholder project for a full-stack Node app_
 
 ## Planned features
 - Express REST API
-- HTML5 frontend. Library/framework TBD
+- React front end
 - MongoDB data storage
-- Passport JS auth, either session or JWT
+- Session Authentication
 - User Posts implementation, Update, Delete, etc.
 - Profile page
 

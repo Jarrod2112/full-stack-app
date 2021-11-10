@@ -14,8 +14,10 @@ usersRouter.get("/profile", async function (req, res) {
   const userId = req.user._id;
   const collection = db.getInstance().collection("users");
   const query = { _id: userId };
-  let userProfile = await collection.find(query, { "profile": "profile" });
-  return res.json(userProfile);
+  let userProfile = await collection.findOne(query, {
+    projection: { profile: 1, _id: 0 }
+  })
+  return res.json(userProfile); // { profile: { email... } }
 });
 
 // Get the current logged in user
@@ -56,7 +58,7 @@ usersRouter.patch("/profile", async (req, res) => {
 
   await collection.updateOne({ _id: userId }, { $set: { profile: newProfile } });
   // return something
-  return res.status(200).send('Profile created');
+  return res.status(200).send("Profile created");
 });
 
 usersRouter.get("/search/:term", async (req, res) => {
