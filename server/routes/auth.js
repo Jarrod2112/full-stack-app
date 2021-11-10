@@ -25,6 +25,7 @@ authRouter.post("/register", async (req, res) => {
     _id: new ObjectId(),
     username,
     password: bcrypt.hashSync(password, salt),
+    profile: {}
   };
 
   // create a new user in DB
@@ -40,7 +41,7 @@ authRouter.post("/register", async (req, res) => {
   });
 });
 
-authRouter.post("/login", 
+authRouter.post("/login",
   passport.authenticate('local'),
   (req, res) => {
     console.log(req.user);
