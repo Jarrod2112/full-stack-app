@@ -41,8 +41,10 @@ function App() {
         </>
       ) : (
         <>
-          <Register dispatchUser={setUser} />
-          <Login dispatchUser={setUser} />
+          <Router>
+            <Register dispatchUser={setUser} />
+            <Route path="/login" exact component={Login} />
+          </Router>
         </>
       )}
     </div>
