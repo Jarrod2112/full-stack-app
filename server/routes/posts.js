@@ -106,6 +106,7 @@ postsRouter.get("/:username", async function (req, res) {
   const result = await collection.findOne(query);
   return res.json(result);
 });
+
 postsRouter.get("/:id", async function (req, res) {
   // get a post by id
   const id = ObjectID(req.params.id);
@@ -122,5 +123,7 @@ postsRouter.get("/", async function (req, res) {
   return res.json(result);
   // res.send(JSON.stringify([]))
 });
+
+
 
 module.exports = postsRouter;

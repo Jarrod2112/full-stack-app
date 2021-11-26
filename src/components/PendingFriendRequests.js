@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaCheck, FaTimes } from 'react-icons/fa'
+//import { FaCheck, FaTimes } from 'react-icons/fa'
 import { FriendRequestsResources } from '../resources/friend-requests';
 
 export const PendingFriendRequests = () => {

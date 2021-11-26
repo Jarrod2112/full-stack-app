@@ -5,6 +5,21 @@ const moment = require('moment')
 
 const usersRouter = Router();
 
+//Get users profile
+//usersRouter.get("/profile", async (req, res) => {
+
+//})
+
+usersRouter.get("/profile", async function (req, res) {
+  const userId = req.user._id;
+  const collection = db.getInstance().collection("users");
+  const query = { _id: userId };
+  let userProfile = await collection.findOne(query, {
+    projection: { profile: 1, _id: 0 }
+  })
+  return res.json(userProfile); // { profile: { email... } }
+});
+
 // Get the current logged in user
 usersRouter.get("/", async (req, res) => {
   const collection = db.getInstance().collection("users");
@@ -13,6 +28,7 @@ usersRouter.get("/", async (req, res) => {
   }
 
   const user = await collection.findOne({ _id: new ObjectId(req.user._id) });
+
   if (!user) {
     res.status(404).send("NOT_FOUND");
   }
@@ -28,13 +44,13 @@ usersRouter.patch("/profile", async (req, res) => {
   const collection = db.getInstance().collection("users");
 
   // update profile fields
-  const firstName = req.user.profile.firstName || req.body.firstName;
-  const lastName = req.user.profile.lastName || req.body.lastName;
-  const phoneNumber = req.user.profile.phoneNumber || req.body.phoneNumber;
-  const email = req.user.profile.email || req.body.email;
-  let birthday = req.user.profile.birthday || req.body.birthday;
+  const firstName = req.body.firstName || req.user.profile.firstName;
+  const lastName = req.body.lastName || req.user.profile.lastName;
+  const phoneNumber = req.body.phoneNumber || req.user.profile.phoneNumber;
+  const email = req.body.email || req.user.profile.email;
+  let birthday = req.body.birthday || req.user.profile.birthday;
 
-  if(birthday) {
+  if (birthday) {
     birthday = moment(birthday).toDate();
   }
 
@@ -42,7 +58,7 @@ usersRouter.patch("/profile", async (req, res) => {
 
   await collection.updateOne({ _id: userId }, { $set: { profile: newProfile } });
   // return something
-  return res.status(200).send('Profile created');
+  return res.status(200).send("Profile created");
 });
 
 usersRouter.get("/search/:term", async (req, res) => {
@@ -66,7 +82,7 @@ usersRouter.get("/search/:term", async (req, res) => {
   }
   const requests = await friendRequestsCollection.find({ fromUserId: new ObjectId(user._id) }).toArray();
   results.forEach(result => {
-    
+
     // Add flag for requested friends
     result.isRequested = requests.some(request => request.toUserId.equals(result._id));
 
