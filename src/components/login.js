@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import auth from "../resources/auth";
 import userResources from '../resources/users';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   async function login() {
     await auth.login(username, password);
     const user = await userResources.currentUser();
     props.dispatchUser(user);
+    history.push('/');
   }
 
   return (
@@ -33,8 +35,10 @@ export const Login = (props) => {
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <Link to="/" className="btn btn-success btn-sm mt-2 nav-link active" onClick={login}>Submit</Link>
+              <button className="btn btn-success btn-sm mt-2 nav-link active" onClick={login}>Submit</button>
             </div>
+            <h5>Create a new account</h5>
+            <Link to="/register" className="nav-link active">Register</Link>
           </div>
         </div>
         <div className="col"></div>

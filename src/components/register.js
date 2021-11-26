@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import auth from "../resources/auth";
 import userResources from "../resources/users";
-import { BrowserRouter, Link } from "react-router-dom";
+import { BrowserRouter, Link, useHistory } from "react-router-dom";
 
 export const Register = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   async function register() {
     await auth.register(username, password);
     const user = await userResources.currentUser();
     props.dispatchUser(user);
+    history.push('/');
   }
 
   return (
