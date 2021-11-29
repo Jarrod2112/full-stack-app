@@ -8,6 +8,10 @@ function register(username, password) {
     return http.post('/api/auth/register', { username, password });
 }
 
+function logout() {
+    return http.get('/api/auth/logout')
+}
+
 export default {
-    login, register
+    login, register, logout,
 }

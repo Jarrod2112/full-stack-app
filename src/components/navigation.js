@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Link, NavLink, Route, useHistory } from 'react-router-dom';
 import { FaUserFriends } from 'react-icons/fa';
 import { FriendRequestsResources } from '../resources/friend-requests';
-
+import auth from "../resources/auth";
 
 
 export const Navigation = (props) => {
@@ -20,6 +20,11 @@ export const Navigation = (props) => {
 
     function handleKeyPress(e) {
         if (e.key === 'Enter') { handleSearch() }
+    }
+
+    function logout() {
+        auth.logout();
+        history.push('/');
     }
 
     return (
@@ -55,6 +60,7 @@ export const Navigation = (props) => {
                         value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} />
                     <button className="btn btn-outline-success" onClick={handleSearch}>Search</button>
                 </div>
+                <button className="btn btn-outline-danger" onClick={logout}>Logout</button>
             </div>
         </nav>
     )
