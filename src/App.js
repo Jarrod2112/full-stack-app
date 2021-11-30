@@ -30,7 +30,7 @@ function App() {
       {user ? (
         <>
           <Router>
-            <Navigation username={user.username} />
+            <Navigation username={user.username} dispatchUser={setUser} />
             <Switch>
               <Route path="/" exact component={List} />
               <Route path="/profile" exact component={Profile} />
