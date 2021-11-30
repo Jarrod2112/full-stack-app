@@ -25,6 +25,7 @@ export const Navigation = (props) => {
     function logout() {
         auth.logout();
         history.push('/');
+        props.dispatchUser(null);
     }
 
     return (
