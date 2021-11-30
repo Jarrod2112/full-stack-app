@@ -6,6 +6,11 @@ const mongo = require("../mongo/MongoSingleton");
 
 const authRouter = Router();
 
+authRouter.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/login");
+});
+
 authRouter.post("/register", async (req, res) => {
   const { username, password } = req.body;
   const collection = mongo.getInstance().collection("users");
