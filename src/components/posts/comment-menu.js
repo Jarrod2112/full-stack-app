@@ -17,7 +17,7 @@ export const CommentMenu = (props) => {
   }
 
   async function handleEditClick() {
-    await postResources.editComment(newText, props.postId, props.commentId)
+    await postResources.editComment(newText, props.postId, props.commentId);
     props.onCommentEdit();
     toggleHidden();
   }
@@ -54,29 +54,30 @@ export const CommentMenu = (props) => {
         </div>
         <div>
           {isEditing ? (
-            <textarea value={newText} onChange={(e) => setNewText(e.target.value)} />
+            <textarea
+              value={newText}
+              onChange={(e) => setNewText(e.target.value)}
+            />
           ) : (
             <p>{newText}</p>
           )}
-          <button onClick={() => setIsEditing(!isEditing)}
+          <button
+            onClick={() => setIsEditing(!isEditing)}
             className="btn btn-outline-secondary dropdown-toggle"
-            type="button"
-            role="button"
-            className="dropdown-item">
-            {isEditing ?
-              (
-                <span
-                  onClick={() => handleEditClick()}
-                  className="btn btn-outline-secondary dropdown-toggle"
-                  type="button"
-                  role="button"
-                  value={newText}
-                  className="dropdown-item">
-                  Save
-                </span>
-              )
-              :
-              "Edit"}
+          >
+            {isEditing ? (
+              <span
+                onClick={() => handleEditClick()}
+                className="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                role="button"
+                value={newText}
+              >
+                Save
+              </span>
+            ) : (
+              "Edit"
+            )}
           </button>
         </div>
       </ul>
