@@ -119,7 +119,7 @@ postsRouter.get("/:id", async function (req, res) {
 // Post Functionality
 // GET /api/posts
 postsRouter.get("/", async function (req, res) {
-  const result = await db.getInstance().collection("posts").find({}).toArray();
+  const result = await db.getInstance().collection("posts").find({}).sort({ timestamp: -1 }).toArray();
   return res.json(result);
   // res.send(JSON.stringify([]))
 });
