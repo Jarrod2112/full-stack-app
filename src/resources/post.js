@@ -29,15 +29,14 @@ const createComment = (comment, postId) => {
 const editComment = (newText, postId, commentId) => {
   return http.patch(`/api/posts/comments/${postId}/${commentId}`, {
     newText: newText,
-  })
-}
+  });
+};
 
 const deleteComment = (commentId, postId) => {
   return http.del(`/api/posts/comments/${postId}/${commentId}`);
 };
 
-
-export default {
+const postResources = {
   createPost,
   allPosts,
   createComment,
@@ -46,3 +45,5 @@ export default {
   deleteComment,
   editComment,
 };
+
+export default postResources;
