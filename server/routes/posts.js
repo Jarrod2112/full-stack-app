@@ -1,4 +1,4 @@
-const { ObjectID } = require("bson");
+const { ObjectID, ObjectId } = require("bson");
 const { Router } = require("express");
 const db = require("../mongo/MongoSingleton");
 module.exports = { Router };
@@ -10,19 +10,26 @@ postsRouter.patch("/comments/:postId/:commentId", async function (req, res) {
   const commentId = req.params.commentId;
   const newComment = req.body.newText;
   const collection = db.getInstance().collection("posts");
-  const query = { _id: new ObjectID(postId), "comments.id": new ObjectID(commentId) };
-  const result = await collection.updateOne(query, { $set: { "comments.$.comment": newComment } } );
+  const query = {
+    _id: new ObjectID(postId),
+    "comments.id": new ObjectID(commentId),
+  };
+  const result = await collection.updateOne(query, {
+    $set: { "comments.$.comment": newComment },
+  });
   return res.json(result);
-})
+});
 
 postsRouter.delete("/comments/:postId/:commentId", async function (req, res) {
   const postId = req.params.postId;
   const commentId = req.params.commentId;
   const collection = db.getInstance().collection("posts");
-  const id = { _id: new ObjectID(postId) }
-  const result = await collection.updateOne(id, { $pull: { comments: { id: new ObjectID(commentId) } } });
+  const id = { _id: new ObjectID(postId) };
+  const result = await collection.updateOne(id, {
+    $pull: { comments: { id: new ObjectID(commentId) } },
+  });
   return res.json(result);
-})
+});
 
 postsRouter.patch("/:id", async function (req, res) {
   // gather post id, new post text, user id
@@ -33,7 +40,7 @@ postsRouter.patch("/:id", async function (req, res) {
   const collection = db.getInstance().collection("posts");
   // reject if the current user didn't create the existing post,
   // i.e. current user id doesn't match the user id on the post we're trying to edit
-  const query = { _id: new ObjectID(postId) }
+  const query = { _id: new ObjectID(postId) };
   const existingPost = await collection.findOne(query);
   if (!userId.equals(existingPost.user.id)) {
     return res.status(403).send("FORBIDDEN");
@@ -119,11 +126,23 @@ postsRouter.get("/:id", async function (req, res) {
 // Post Functionality
 // GET /api/posts
 postsRouter.get("/", async function (req, res) {
-  const result = await db.getInstance().collection("posts").find({}).sort({ timestamp: -1 }).toArray();
+  // find all the friends of the current user
+  const currentUserId = new ObjectId(req.user._id);
+  const user = await db
+    .getInstance()
+    .collection("users")
+    .findOne({ _id: currentUserId });
+  const friendIds = user.friends.map(f => f.userId);
+  friendIds.push(currentUserId);
+
+  // only fetch posts created by them
+  const result = await db
+    .getInstance()
+    .collection("posts")
+    .find({ 'user.id': { $in: friendIds } })
+    .sort({ timestamp: -1 })
+    .toArray();
   return res.json(result);
-  // res.send(JSON.stringify([]))
 });
-
-
 
 module.exports = postsRouter;
